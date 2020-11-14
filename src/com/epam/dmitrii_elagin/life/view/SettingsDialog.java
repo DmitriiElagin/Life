@@ -30,8 +30,8 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
     //Высота поля
     private int rows;
 
-    //Маскимальный возраст колонии
-    private int maxAge;
+    //Продолжительность жизни колонии
+    private int lifeSpan;
 
     //Поле ввода ширины игрового поля
     private TextField tfColumns;
@@ -40,16 +40,16 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
     private TextField tfRows;
 
     //Поле ввода максимального возраста колонии
-    private TextField tfMaxAge;
+    private TextField tfLifeSpan;
 
     private Button btnOk;
 
 
-    public SettingsDialog(Frame parent, SettingsController controller, int columns, int rows, int maxAge) {
+    public SettingsDialog(Frame parent, SettingsController controller, int columns, int rows, int lifeSpan) {
         super(parent,true);
         this.columns=columns;
         this.rows=rows;
-        this.maxAge=maxAge;
+        this.lifeSpan=lifeSpan;
         this.controller=controller;
 
         initUI();
@@ -101,10 +101,10 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
         tfRows.addKeyListener(this);
         tfRows.addTextListener(this);
         addComponent(panel,tfRows, null);
-        tfMaxAge=new TextField(""+rows,TF_COLUMNS);
-        tfMaxAge.addKeyListener(this);
-        tfMaxAge.addTextListener(this);
-        addComponent(panel,tfMaxAge, null);
+        tfLifeSpan=new TextField(""+rows,TF_COLUMNS);
+        tfLifeSpan.addKeyListener(this);
+        tfLifeSpan.addTextListener(this);
+        addComponent(panel,tfLifeSpan, null);
 
         return panel;
     }
@@ -137,8 +137,8 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
     public void actionPerformed(ActionEvent e) {
         rows=Integer.parseInt(tfRows.getText());
         columns=Integer.parseInt(tfColumns.getText());
-        maxAge=Integer.parseInt(tfMaxAge.getText());
-        controller.onOkAction(rows,columns,maxAge);
+        lifeSpan=Integer.parseInt(tfLifeSpan.getText());
+        controller.onOkAction(rows,columns,lifeSpan);
         dispose();
     }
 
@@ -152,7 +152,7 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
            int c=Integer.parseInt(tfRows.getText());
 
            enabled=!(r < MIN_SIZE || c < MIN_SIZE) &&
-                   !tfMaxAge.getText().isEmpty();
+                   !tfLifeSpan.getText().isEmpty();
         }
         catch (NumberFormatException ex) {
            enabled=false;
