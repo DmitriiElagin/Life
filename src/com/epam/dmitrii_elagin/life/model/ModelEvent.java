@@ -24,6 +24,18 @@ public class ModelEvent {
         this.eventType=ModelEventType.FIELD_SIZE_CHANGED;
     }
 
+    public Model.State getState() {
+        return state;
+    }
+
+    public Dimension getSize() {
+        return size;
+    }
+
+    public ModelEventType getEventType() {
+        return eventType;
+    }
+
     public static enum ModelEventType {
         STATE_CHANGED,
         FIELD_SIZE_CHANGED,

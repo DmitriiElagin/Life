@@ -2,6 +2,8 @@ package com.epam.dmitrii_elagin.life.view;
 
 
 
+import com.epam.dmitrii_elagin.life.controller.MainController;
+import com.epam.dmitrii_elagin.life.model.Model;
 import com.epam.dmitrii_elagin.life.model.ModelEvent;
 import com.epam.dmitrii_elagin.life.model.ModelListener;
 
@@ -10,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Set;
 
 
 public class MainFrame extends Frame implements ActionListener, ModelListener {
@@ -19,17 +22,31 @@ public class MainFrame extends Frame implements ActionListener, ModelListener {
     private static final int MIN_WIDTH=600;
     private static final int MIN_HEIGHT=300;
 
+    private MainController controller;
+
+    private Dimension fieldSize;
+
+    private Set<Point> data;
+
 
     private Button btnStart;
     private Button btnStop;
     private Button btnClear;
-    private Button btnSettings;
 
-    private Canvas canvas;
+    //Матрица компонентов для отображения бактерий
+    private Component[][] matrix;
+
+    //Панель для размещения матрицы
+    private Panel pnlMatrix;
+
+    private GridLayout gridLayout;
 
 
 
-    public MainFrame() {
+    public MainFrame(MainController controller) {
+
+        this.controller=controller;
+
         initUI();
     }
 
@@ -53,14 +70,16 @@ public class MainFrame extends Frame implements ActionListener, ModelListener {
             }
         });
 
-        canvas=new Canvas();
-        canvas.setBackground(Color.GRAY);
-        add(canvas,BorderLayout.CENTER);
+        gridLayout=new GridLayout();
+
+        pnlMatrix=new Panel(new GridLayout());
+        pnlMatrix.setBackground(Color.GRAY);
+
+        add(pnlMatrix,BorderLayout.CENTER);
 
         createMenu();
 
         createControlPanel();
-
     }
 
     private void createMenu() {
@@ -111,23 +130,44 @@ public class MainFrame extends Frame implements ActionListener, ModelListener {
         add(pnlControl,BorderLayout.SOUTH);
     }
 
+    private void createMatrix() {
+        matrix=new Button[fieldSize.height][fieldSize.width];
+
+        gridLayout.setColumns(fieldSize.width);
+        gridLayout.setRows(fieldSize.height);
+
+        for(int i=0; i<fieldSize.height; i++){
+            for(int j=0; j<fieldSize.width; j++){
+                Button button=new Button();
+                button.setBackground(Color.darkGray);
+                matrix[i][j]=new Button();
+                pnlMatrix.add(button);
+
+            }
+        }
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
             case "Clear":
-                System.out.println("Очистить");
+                controller.onClearAction();
+
                 break;
             case "Settings":
-                System.out.println("Настройки");
+                controller.onSettingsAction(this);
+
                 break;
             case "Start":
-                System.out.println("Старт");
+                controller.onStartAction();
+
                 break;
             case "Stop":
-                System.out.println("Стоп");
+                controller.onStopAction();
+
                 break;
             case "Exit":
+                controller.onStopAction();
                 dispose();
                 break;
 
@@ -137,5 +177,25 @@ public class MainFrame extends Frame implements ActionListener, ModelListener {
     @Override
     public void handleEvent(ModelEvent event) {
 
+        switch (event.getEventType()){
+            case STATE_CHANGED:
+               setButtonsState(event.getState());
+                break;
+            case FIELD_SIZE_CHANGED:
+               fieldSize = event.getSize();
+
+        }
+    }
+
+    private void setButtonsState(Model.State state) {
+        if(state == Model.State.RUNNING) {
+            btnStart.setEnabled(false);
+            btnStart.setLabel("Running...");
+            btnClear.setEnabled(false);
+        } else if(state == Model.State.STOPPED){
+            btnStart.setEnabled(true);
+            btnStart.setLabel("Start");
+            btnClear.setEnabled(true);
+        }
     }
 }
