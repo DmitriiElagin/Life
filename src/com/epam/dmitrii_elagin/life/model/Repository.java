@@ -1,6 +1,7 @@
 package com.epam.dmitrii_elagin.life.model;
 
 import java.awt.*;
+import java.util.List;
 
 public class Repository implements Model {
     //Размер поля
@@ -12,8 +13,14 @@ public class Repository implements Model {
     //Возраст колонии
     private int age;
 
+    private List<ModelListener> listeners;
+
     @Override
     public void setFieldSize(Dimension dimension) {
+
+        this.fieldSize=dimension;
+
+        sendEvent(new ModelEvent(dimension));
 
     }
 
@@ -36,4 +43,24 @@ public class Repository implements Model {
     public void clearField() {
 
     }
+
+    @Override
+    public void registerListener(ModelListener listener) {
+        listeners.add(listener);
+    }
+
+    @Override
+    public void removeListener(ModelListener listener) {
+        listeners.remove(listener);
+    }
+
+    @Override
+    public void sendEvent(ModelEvent event) {
+        for(ModelListener listener:listeners) {
+            listener.handleEvent(event);
+        }
+
+    }
+
+
 }

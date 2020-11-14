@@ -101,7 +101,7 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
         tfRows.addKeyListener(this);
         tfRows.addTextListener(this);
         addComponent(panel,tfRows, null);
-        tfLifeSpan=new TextField(""+rows,TF_COLUMNS);
+        tfLifeSpan=new TextField(""+lifeSpan,TF_COLUMNS);
         tfLifeSpan.addKeyListener(this);
         tfLifeSpan.addTextListener(this);
         addComponent(panel,tfLifeSpan, null);

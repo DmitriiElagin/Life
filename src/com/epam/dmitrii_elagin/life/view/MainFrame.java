@@ -2,6 +2,9 @@ package com.epam.dmitrii_elagin.life.view;
 
 
 
+import com.epam.dmitrii_elagin.life.model.ModelEvent;
+import com.epam.dmitrii_elagin.life.model.ModelListener;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,7 +12,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 
-public class MainFrame extends Frame implements ActionListener {
+public class MainFrame extends Frame implements ActionListener, ModelListener {
 
     private static final int WIDTH=800;
     private static final int HEIGHT=800;
@@ -129,5 +132,10 @@ public class MainFrame extends Frame implements ActionListener {
                 break;
 
         }
+    }
+
+    @Override
+    public void handleEvent(ModelEvent event) {
+
     }
 }
