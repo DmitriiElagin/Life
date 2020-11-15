@@ -18,6 +18,8 @@ public class Main {
 
         MainFrame frame=new MainFrame(new MainController(model));
 
+        frame.setData(model.getData());
+
         model.registerListener(frame);
 
         SettingsDialog settingsFrame=

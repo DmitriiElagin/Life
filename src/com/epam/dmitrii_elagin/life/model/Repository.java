@@ -1,7 +1,7 @@
 package com.epam.dmitrii_elagin.life.model;
 
 import java.awt.*;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
 
 public class Repository implements Model {
@@ -14,6 +14,8 @@ public class Repository implements Model {
     //Возраст колонии
     private int age;
 
+   Set<Point> data;
+
     private List<ModelListener> listeners;
 
     public Repository() {
@@ -22,6 +24,8 @@ public class Repository implements Model {
         fieldSize=new Dimension(Model.WIDTH,Model.HEIGHT);
         //Установка продолжительности жизни по-умолчанию
         lifeSpan=Model.LIFE_SPAN;
+
+        data=new HashSet<>();
     }
 
     @Override
@@ -30,6 +34,11 @@ public class Repository implements Model {
         this.fieldSize=dimension;
 
         sendEvent(new ModelEvent(dimension));
+    }
+
+    @Override
+    public Collection<Point> getData() {
+        return data;
     }
 
     @Override

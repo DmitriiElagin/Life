@@ -1,6 +1,7 @@
 package com.epam.dmitrii_elagin.life.model;
 
 import java.awt.*;
+import java.util.Collection;
 
 public interface Model {
 
@@ -18,6 +19,8 @@ public interface Model {
     }
 
     void setFieldSize(Dimension dimension);
+
+    Collection<Point> getData();
 
     Dimension getFieldSize();
 

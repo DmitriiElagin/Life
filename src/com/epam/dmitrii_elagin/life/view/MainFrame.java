@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Collection;
 import java.util.Set;
 
 
@@ -26,7 +27,7 @@ public class MainFrame extends Frame implements ActionListener, ModelListener {
 
     private Dimension fieldSize;
 
-    private Set<Point> data;
+    private Collection<Point> data;
 
 
     private Button btnStart;
@@ -52,6 +53,10 @@ public class MainFrame extends Frame implements ActionListener, ModelListener {
 
 
         initUI();
+    }
+
+    public void setData(Collection<Point> data) {
+        this.data = data;
     }
 
     //Создание и инициализация компонентов интерфейса
