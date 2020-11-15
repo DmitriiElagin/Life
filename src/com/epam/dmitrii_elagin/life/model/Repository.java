@@ -1,6 +1,7 @@
 package com.epam.dmitrii_elagin.life.model;
 
 import java.awt.*;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Repository implements Model {
@@ -15,18 +16,31 @@ public class Repository implements Model {
 
     private List<ModelListener> listeners;
 
+    public Repository() {
+        listeners=new LinkedList<ModelListener>();
+    }
+
     @Override
     public void setFieldSize(Dimension dimension) {
 
         this.fieldSize=dimension;
 
         sendEvent(new ModelEvent(dimension));
+    }
 
+    @Override
+    public Dimension getFieldSize() {
+        return fieldSize;
     }
 
     @Override
     public void setLifeSpan(int lifeSpan) {
         this.lifeSpan=lifeSpan;
+    }
+
+    @Override
+    public int getLifeSpan() {
+        return lifeSpan;
     }
 
     @Override

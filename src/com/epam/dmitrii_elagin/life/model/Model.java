@@ -19,7 +19,11 @@ public interface Model {
 
     void setFieldSize(Dimension dimension);
 
+    Dimension getFieldSize();
+
     void setLifeSpan(int lifeSpan);
+
+    int getLifeSpan();
 
     void runSimulation();
 

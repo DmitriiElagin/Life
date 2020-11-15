@@ -23,21 +23,17 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
     private static final int MIN_SIZE=3;
     private final SettingsController controller;
 
-
-    //Ширина поля
-    private int columns;
-
-    //Высота поля
-    private int rows;
+    //Размер поля
+    private Dimension size;
 
     //Продолжительность жизни колонии
     private int lifeSpan;
 
     //Поле ввода ширины игрового поля
-    private TextField tfColumns;
+    private TextField tfWidth;
 
     //Поле ввода высоты игрового поля
-    private TextField tfRows;
+    private TextField tfHeight;
 
     //Поле ввода максимального возраста колонии
     private TextField tfLifeSpan;
@@ -45,10 +41,9 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
     private Button btnOk;
 
 
-    public SettingsDialog(Frame parent, SettingsController controller, int columns, int rows, int lifeSpan) {
+    public SettingsDialog(Frame parent, SettingsController controller, int width, int height, int lifeSpan) {
         super(parent,true);
-        this.columns=columns;
-        this.rows=rows;
+        size=new Dimension(width,height);
         this.lifeSpan=lifeSpan;
         this.controller=controller;
 
@@ -93,14 +88,14 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
         panel.setFont(font);
 
 
-        tfColumns=new TextField(""+columns,TF_COLUMNS);
-        tfColumns.addTextListener(this);
-        tfColumns.addKeyListener(this);
-        addComponent(panel,tfColumns, null);
-        tfRows=new TextField(""+rows,TF_COLUMNS);
-        tfRows.addKeyListener(this);
-        tfRows.addTextListener(this);
-        addComponent(panel,tfRows, null);
+        tfWidth=new TextField(""+size.width,TF_COLUMNS);
+        tfWidth.addTextListener(this);
+        tfWidth.addKeyListener(this);
+        addComponent(panel,tfWidth, null);
+        tfHeight=new TextField(""+size.height,TF_COLUMNS);
+        tfHeight.addKeyListener(this);
+        tfHeight.addTextListener(this);
+        addComponent(panel,tfHeight, null);
         tfLifeSpan=new TextField(""+lifeSpan,TF_COLUMNS);
         tfLifeSpan.addKeyListener(this);
         tfLifeSpan.addTextListener(this);
@@ -118,9 +113,9 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
 
         Dimension dimension=new Dimension(110,30);
 
-        addComponent(panel, new Label("Columns:"),dimension);
-        addComponent(panel,new Label("Rows:"),dimension);
-        addComponent(panel,new Label("Max age:"),dimension);
+        addComponent(panel, new Label("Width:"),dimension);
+        addComponent(panel,new Label("Height:"),dimension);
+        addComponent(panel,new Label("Life Span:"),dimension);
 
         return panel;
 
@@ -135,10 +130,10 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        rows=Integer.parseInt(tfRows.getText());
-        columns=Integer.parseInt(tfColumns.getText());
+        size.height=Integer.parseInt(tfHeight.getText());
+        size.width=Integer.parseInt(tfWidth.getText());
         lifeSpan=Integer.parseInt(tfLifeSpan.getText());
-        controller.onOkAction(rows,columns,lifeSpan);
+        controller.onOkAction(size,lifeSpan);
         dispose();
     }
 
@@ -148,10 +143,10 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
 
         //Запретить кнопку, если значения полей ниже минимальных или отсутствуют
         try {
-           int r=Integer.parseInt(tfColumns.getText());
-           int c=Integer.parseInt(tfRows.getText());
+           int w=Integer.parseInt(tfWidth.getText());
+           int h=Integer.parseInt(tfHeight.getText());
 
-           enabled=!(r < MIN_SIZE || c < MIN_SIZE) &&
+           enabled=!(w < MIN_SIZE || h < MIN_SIZE) &&
                    !tfLifeSpan.getText().isEmpty();
         }
         catch (NumberFormatException ex) {

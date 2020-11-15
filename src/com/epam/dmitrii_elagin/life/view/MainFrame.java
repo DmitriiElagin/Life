@@ -183,6 +183,8 @@ public class MainFrame extends Frame implements ActionListener, ModelListener {
                 break;
             case FIELD_SIZE_CHANGED:
                fieldSize = event.getSize();
+                System.out.println("height = "+fieldSize.height+" width = "+fieldSize.width);
+               createMatrix();
 
         }
     }

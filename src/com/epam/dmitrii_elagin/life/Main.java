@@ -1,5 +1,6 @@
 package com.epam.dmitrii_elagin.life;
 
+import com.epam.dmitrii_elagin.life.controller.MainController;
 import com.epam.dmitrii_elagin.life.controller.SettingsController;
 import com.epam.dmitrii_elagin.life.model.Model;
 import com.epam.dmitrii_elagin.life.model.Repository;
@@ -13,10 +14,15 @@ public class Main {
     public static void main(String[] args) {
 
         Model model=new Repository();
-        MainFrame frame=new MainFrame();
-        SettingsController settingsController=new SettingsController();
+
+
+        MainFrame frame=new MainFrame(new MainController(model));
+
+        model.registerListener(frame);
+
         SettingsDialog settingsFrame=
-                new SettingsDialog(frame, settingsController, Model.WIDTH, Model.HEIGHT,Model.LIFE_SPAN);
+                new SettingsDialog(frame, new SettingsController(model),
+                        Model.WIDTH, Model.HEIGHT,Model.LIFE_SPAN);
         settingsFrame.setVisible(true);
         frame.setVisible(true);
 
