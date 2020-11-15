@@ -14,6 +14,8 @@ public interface Model {
     //Продолжительность жизни колонии по-умолчанию
     int LIFE_SPAN=100;
 
+    void switchCell(Point p);
+
     public static enum State {
         RUNNING, STOPPED
     }

@@ -8,15 +8,12 @@ import com.epam.dmitrii_elagin.life.model.ModelEvent;
 import com.epam.dmitrii_elagin.life.model.ModelListener;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.util.Collection;
 import java.util.Set;
 
 
-public class MainFrame extends Frame implements ActionListener, ModelListener {
+public class MainFrame extends Frame implements ActionListener, ModelListener{
 
     private static final int WIDTH=800;
     private static final int HEIGHT=800;
@@ -34,8 +31,7 @@ public class MainFrame extends Frame implements ActionListener, ModelListener {
     private Button btnStop;
     private Button btnClear;
 
-    //Матрица компонентов для отображения бактерий
-    private Component[][] matrix;
+
 
     //Панель для размещения матрицы
     private Panel pnlMatrix;
@@ -82,7 +78,8 @@ public class MainFrame extends Frame implements ActionListener, ModelListener {
         gridLayout=new GridLayout();
 
         pnlMatrix=new Panel(gridLayout);
-        pnlMatrix.setBackground(Color.GRAY);
+
+
 
         add(pnlMatrix,BorderLayout.CENTER);
         createMatrix();
@@ -141,17 +138,18 @@ public class MainFrame extends Frame implements ActionListener, ModelListener {
     }
 
     private void createMatrix() {
-        matrix=new Button[fieldSize.height][fieldSize.width];
 
         gridLayout.setColumns(fieldSize.width);
         gridLayout.setRows(fieldSize.height);
+
         pnlMatrix.removeAll();
 
-        for(int i=0; i<fieldSize.height; i++){
-            for(int j=0; j<fieldSize.width; j++){
+        for(int c=0; c<fieldSize.width; c++){
+            for(int r=0; r<fieldSize.height; r++){
                 Button button=new Button();
-                button.setBackground(Color.darkGray);
-                matrix[i][j]=new Button();
+                button.setBackground(Color.GRAY);
+                button.addActionListener(this);
+
                 pnlMatrix.add(button);
             }
 
@@ -184,6 +182,10 @@ public class MainFrame extends Frame implements ActionListener, ModelListener {
                 dispose();
                 break;
 
+            default:
+               Point p=findLocation(e.getSource());
+                controller.onCellClick(p);
+
         }
     }
 
@@ -196,10 +198,44 @@ public class MainFrame extends Frame implements ActionListener, ModelListener {
                 break;
             case FIELD_SIZE_CHANGED:
                fieldSize = event.getSize();
-                System.out.println("height = "+fieldSize.height+" width = "+fieldSize.width);
                createMatrix();
+               break;
+            case DATA_CHANGED:
+                updateMatrix();
+                break;
 
         }
+    }
+
+    private void updateMatrix() {
+        Component[] cells = pnlMatrix.getComponents();
+        Point point=new Point(0,0);
+        for(int c=0, i=0; c<fieldSize.width; c++) {
+            for(int r=0; r<fieldSize.height; r++,i++) {
+                point.setLocation(r,c);
+
+                if(data.contains(point)) {
+                    cells[i].setBackground(Color.green);
+                } else{
+                  cells[i].setBackground(Color.GRAY);
+                }
+            }
+        }
+
+    }
+
+    //ищет позицию компонента в матрице
+    private Point findLocation(Object obj) {
+
+        Component[] components = pnlMatrix.getComponents();
+        for(int c=0, i=0; c<fieldSize.width; c++) {
+            for(int r=0; r<fieldSize.height; r++,i++) {
+                if(components[i]==obj) {
+                    return new Point(r,c);
+                }
+            }
+        }
+        return null;
     }
 
     private void setButtonsState(Model.State state) {

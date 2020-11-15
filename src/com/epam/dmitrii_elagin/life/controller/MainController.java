@@ -38,8 +38,14 @@ public class MainController {
     }
 
     public void onStartAction() {
+        model.runSimulation();
     }
 
     public void onStopAction() {
+        model.stopSimulation();
+    }
+
+    public void onCellClick(Point p) {
+        model.switchCell(p);
     }
 }

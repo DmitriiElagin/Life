@@ -7,7 +7,7 @@ import com.epam.dmitrii_elagin.life.model.Repository;
 import com.epam.dmitrii_elagin.life.view.MainFrame;
 import com.epam.dmitrii_elagin.life.view.SettingsDialog;
 
-import java.awt.*;
+
 
 public class Main {
 

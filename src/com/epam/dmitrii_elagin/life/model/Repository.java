@@ -29,6 +29,14 @@ public class Repository implements Model {
     }
 
     @Override
+    public void switchCell(Point p) {
+       if(!data.add(p)) {
+           data.remove(p);
+       }
+       sendEvent(new ModelEvent());
+    }
+
+    @Override
     public void setFieldSize(Dimension dimension) {
 
         this.fieldSize=dimension;
@@ -58,11 +66,12 @@ public class Repository implements Model {
 
     @Override
     public void runSimulation() {
-
+        sendEvent(new ModelEvent(State.RUNNING));
     }
 
     @Override
     public void stopSimulation() {
+        sendEvent(new ModelEvent(State.STOPPED));
 
     }
 
