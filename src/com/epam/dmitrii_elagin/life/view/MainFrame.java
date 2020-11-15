@@ -47,6 +47,10 @@ public class MainFrame extends Frame implements ActionListener, ModelListener {
 
         this.controller=controller;
 
+        //Установка размеров поля по-умолчанию
+        fieldSize=new Dimension(Model.WIDTH,Model.HEIGHT);
+
+
         initUI();
     }
 
@@ -72,10 +76,11 @@ public class MainFrame extends Frame implements ActionListener, ModelListener {
 
         gridLayout=new GridLayout();
 
-        pnlMatrix=new Panel(new GridLayout());
+        pnlMatrix=new Panel(gridLayout);
         pnlMatrix.setBackground(Color.GRAY);
 
         add(pnlMatrix,BorderLayout.CENTER);
+        createMatrix();
 
         createMenu();
 
@@ -135,6 +140,7 @@ public class MainFrame extends Frame implements ActionListener, ModelListener {
 
         gridLayout.setColumns(fieldSize.width);
         gridLayout.setRows(fieldSize.height);
+        pnlMatrix.removeAll();
 
         for(int i=0; i<fieldSize.height; i++){
             for(int j=0; j<fieldSize.width; j++){
@@ -142,9 +148,11 @@ public class MainFrame extends Frame implements ActionListener, ModelListener {
                 button.setBackground(Color.darkGray);
                 matrix[i][j]=new Button();
                 pnlMatrix.add(button);
-
             }
+
         }
+
+        pnlMatrix.revalidate();
     }
 
     @Override

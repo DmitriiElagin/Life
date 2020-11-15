@@ -18,6 +18,10 @@ public class Repository implements Model {
 
     public Repository() {
         listeners=new LinkedList<ModelListener>();
+        //Установка размера поля по-умолчанию
+        fieldSize=new Dimension(Model.WIDTH,Model.HEIGHT);
+        //Установка продолжительности жизни по-умолчанию
+        lifeSpan=Model.LIFE_SPAN;
     }
 
     @Override
