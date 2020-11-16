@@ -3,6 +3,7 @@ package com.epam.dmitrii_elagin.life.model;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.jar.JarOutputStream;
 
 public class Repository implements Model {
     //Размер поля
@@ -14,7 +15,8 @@ public class Repository implements Model {
     //Возраст колонии
     private int age;
 
-   Set<Point> data;
+   //Набор координат занятых ячеек
+    Set<Point> data;
 
     private List<ModelListener> listeners;
 
@@ -28,6 +30,21 @@ public class Repository implements Model {
         data=new HashSet<>();
     }
 
+    //Заполнить поле произвольно
+    private void randomlyFill(){
+        Random random=new Random(System.currentTimeMillis());
+        Point point=new Point();
+        for(int y=0; y<fieldSize.height; y++){
+            for(int x=0; x<fieldSize.width; x++){
+                point.setLocation(x,y);
+                if(random.nextBoolean()){
+                    data.add(new Point(point));
+                }
+            }
+        }
+    }
+
+    //Добаляет Point, если ее нет в наборе, иначе удаляет ее
     @Override
     public void switchCell(Point p) {
        if(!data.add(p)) {
@@ -36,10 +53,14 @@ public class Repository implements Model {
        sendEvent(new ModelEvent());
     }
 
+
+
     @Override
     public void setFieldSize(Dimension dimension) {
 
         this.fieldSize=dimension;
+
+        data.clear();
 
         sendEvent(new ModelEvent(dimension));
     }
@@ -66,6 +87,10 @@ public class Repository implements Model {
 
     @Override
     public void runSimulation() {
+        if(data.isEmpty()) {
+            randomlyFill();
+            sendEvent(new ModelEvent());
+        }
         sendEvent(new ModelEvent(State.RUNNING));
     }
 
@@ -77,7 +102,8 @@ public class Repository implements Model {
 
     @Override
     public void clearField() {
-
+            data.clear();
+            sendEvent(new ModelEvent());
     }
 
     @Override

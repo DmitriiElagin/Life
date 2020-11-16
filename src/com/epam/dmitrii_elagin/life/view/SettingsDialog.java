@@ -21,6 +21,10 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
 
     //Минимальная ширина и высота поля
     private static final int MIN_SIZE=3;
+
+    //Максимальная ширина и высота поля
+    private static final int MAX_SIZE=30;
+
     private final SettingsController controller;
 
     //Размер поля
@@ -141,12 +145,13 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
     public void textValueChanged(TextEvent e) {
         boolean enabled;
 
-        //Запретить кнопку, если значения полей ниже минимальных или отсутствуют
+        //Запретить кнопку, если значения полей выходят за пределы разрешенных или отсутствуют
         try {
            int w=Integer.parseInt(tfWidth.getText());
            int h=Integer.parseInt(tfHeight.getText());
 
            enabled=!(w < MIN_SIZE || h < MIN_SIZE) &&
+                   !(w>MAX_SIZE||h>MAX_SIZE)&&
                    !tfLifeSpan.getText().isEmpty();
         }
         catch (NumberFormatException ex) {

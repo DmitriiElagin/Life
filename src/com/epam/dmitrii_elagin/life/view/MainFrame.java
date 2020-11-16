@@ -60,6 +60,7 @@ public class MainFrame extends Frame implements ActionListener, ModelListener{
         setTitle("Life");
 
         setSize(WIDTH, HEIGHT);
+        setResizable(false);
         setMinimumSize(new Dimension(MIN_WIDTH,MIN_HEIGHT));
 
         //Расположить окно по центру
@@ -122,6 +123,8 @@ public class MainFrame extends Frame implements ActionListener, ModelListener{
 
         btnStart=new Button("Start");
         btnStart.setPreferredSize(dimension);
+        Canvas canvas=new Canvas();
+
         btnStart.addActionListener(this);
         pnlControl.add(btnStart);
 
@@ -137,6 +140,7 @@ public class MainFrame extends Frame implements ActionListener, ModelListener{
         add(pnlControl,BorderLayout.SOUTH);
     }
 
+    //Создает и настраивает матрицу компонентов с размерностью поля
     private void createMatrix() {
 
         gridLayout.setColumns(fieldSize.width);
@@ -144,17 +148,16 @@ public class MainFrame extends Frame implements ActionListener, ModelListener{
 
         pnlMatrix.removeAll();
 
-        for(int c=0; c<fieldSize.width; c++){
-            for(int r=0; r<fieldSize.height; r++){
+        for(int y=0; y<fieldSize.height; y++){
+            for(int x=0; x<fieldSize.width; x++){
                 Button button=new Button();
                 button.setBackground(Color.GRAY);
                 button.addActionListener(this);
 
                 pnlMatrix.add(button);
             }
-
         }
-
+        //Перерисовать панель
         pnlMatrix.revalidate();
     }
 
@@ -201,18 +204,20 @@ public class MainFrame extends Frame implements ActionListener, ModelListener{
                createMatrix();
                break;
             case DATA_CHANGED:
-                updateMatrix();
+                updateCells();
                 break;
 
         }
     }
 
-    private void updateMatrix() {
+    //Обновляет отображение ячеек в соответствии с данными
+    private void updateCells() {
+
         Component[] cells = pnlMatrix.getComponents();
-        Point point=new Point(0,0);
-        for(int c=0, i=0; c<fieldSize.width; c++) {
-            for(int r=0; r<fieldSize.height; r++,i++) {
-                point.setLocation(r,c);
+        Point point=new Point();
+         for(int y=0, i=0; y<fieldSize.height; y++) {
+            for(int x=0; x<fieldSize.width; x++,i++) {
+                point.setLocation(x,y);
 
                 if(data.contains(point)) {
                     cells[i].setBackground(Color.green);
@@ -220,7 +225,9 @@ public class MainFrame extends Frame implements ActionListener, ModelListener{
                   cells[i].setBackground(Color.GRAY);
                 }
             }
-        }
+         }
+
+
 
     }
 
@@ -228,10 +235,10 @@ public class MainFrame extends Frame implements ActionListener, ModelListener{
     private Point findLocation(Object obj) {
 
         Component[] components = pnlMatrix.getComponents();
-        for(int c=0, i=0; c<fieldSize.width; c++) {
-            for(int r=0; r<fieldSize.height; r++,i++) {
+        for(int y=0, i=0; y<fieldSize.height; y++) {
+            for(int x=0; x<fieldSize.width; x++,i++) {
                 if(components[i]==obj) {
-                    return new Point(r,c);
+                    return new Point(x,y);
                 }
             }
         }
