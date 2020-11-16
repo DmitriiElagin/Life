@@ -44,6 +44,24 @@ public class Repository implements Model {
         }
     }
 
+    //Считать соседние клетки
+    int countNeighbors(Point p){
+        int i=0;
+        Point point=new Point();
+        for(int y=p.y-1;y<=p.y+1;y++){
+            for(int x=p.x-1; x<=p.x+1; x++) {
+                point.setLocation(x,y);
+                if(point.equals(p)){
+                    continue;
+                }
+                if(data.contains(point)) {
+                    i++;
+                }
+            }
+        }
+        return i;
+    }
+
     //Добаляет Point, если ее нет в наборе, иначе удаляет ее
     @Override
     public void switchCell(Point p) {
@@ -51,6 +69,8 @@ public class Repository implements Model {
            data.remove(p);
        }
        sendEvent(new ModelEvent());
+
+        System.out.println(countNeighbors(p));
     }
 
 
