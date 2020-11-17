@@ -5,18 +5,9 @@ import java.util.Collection;
 
 public interface Model {
 
-    //Ширина поля по-умолчанию
-    int  WIDTH=10;
-
-    //Высота поля по-умолчанию
-    int HEIGHT=10;
-
-    //Продолжительность жизни колонии по-умолчанию
-    int LIFE_SPAN=100;
-
     void switchCell(Point p);
 
-    public static enum State {
+    enum State {
         RUNNING, STOPPED
     }
 

@@ -2,33 +2,23 @@ package com.epam.dmitrii_elagin.life.view;
 
 
 
+import com.epam.dmitrii_elagin.life.Main;
 import com.epam.dmitrii_elagin.life.controller.SettingsController;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ResourceBundle;
 
 //Окно настроек приложения
 public class SettingsDialog extends Dialog implements ActionListener, TextListener, KeyListener {
 
-    //Ширина фрейма
-    private static final int WIDTH=400;
-
-    //Высота фрейма
-    private static final int HEIGHT=300;
-
     //Колл-во колонок текстовых полей
     private static final int TF_COLUMNS=3;
-
-    //Минимальная ширина и высота поля
-    private static final int MIN_SIZE=3;
-
-    //Максимальная ширина и высота поля
-    private static final int MAX_SIZE=30;
 
     private final SettingsController controller;
 
     //Размер поля
-    private Dimension size;
+    private final Dimension fieldSize;
 
     //Продолжительность жизни колонии
     private int lifeSpan;
@@ -42,12 +32,17 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
     //Поле ввода максимального возраста колонии
     private TextField tfLifeSpan;
 
+    private int minSize;
+
+    private int maxSize;
+
     private Button btnOk;
 
 
-    public SettingsDialog(Frame parent, SettingsController controller, int width, int height, int lifeSpan) {
+    public SettingsDialog(Frame parent, SettingsController controller,
+                          Dimension fieldSize, int lifeSpan) {
         super(parent,true);
-        size=new Dimension(width,height);
+        this.fieldSize=fieldSize;
         this.lifeSpan=lifeSpan;
         this.controller=controller;
 
@@ -61,7 +56,12 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
         //Установить окно по центру экрана
         setLocationRelativeTo(null);
 
-        setSize(WIDTH,HEIGHT);
+        setSize(Main.getProperty(Main.SETTINGS_WIDTH),
+                Main.getProperty(Main.SETTINGS_HEIGHT));
+
+        minSize=Main.getProperty(Main.MIN_SIZE);
+        maxSize=Main.getProperty(Main.MAX_SIZE);
+
         setResizable(false);
 
         setLayout(new FlowLayout(FlowLayout.CENTER,50,15));
@@ -70,6 +70,7 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
             @Override
             public void windowClosing(WindowEvent e) {
                 super.windowClosing(e);
+                controller.onCancel();
                 dispose();
             }
         });
@@ -91,12 +92,11 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
         panel.setPreferredSize(new Dimension(100,170));
         panel.setFont(font);
 
-
-        tfWidth=new TextField(""+size.width,TF_COLUMNS);
+        tfWidth=new TextField(""+fieldSize.width,TF_COLUMNS);
         tfWidth.addTextListener(this);
         tfWidth.addKeyListener(this);
         addComponent(panel,tfWidth, null);
-        tfHeight=new TextField(""+size.height,TF_COLUMNS);
+        tfHeight=new TextField(""+fieldSize.height,TF_COLUMNS);
         tfHeight.addKeyListener(this);
         tfHeight.addTextListener(this);
         addComponent(panel,tfHeight, null);
@@ -134,10 +134,10 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        size.height=Integer.parseInt(tfHeight.getText());
-        size.width=Integer.parseInt(tfWidth.getText());
+        fieldSize.height=Integer.parseInt(tfHeight.getText());
+        fieldSize.width=Integer.parseInt(tfWidth.getText());
         lifeSpan=Integer.parseInt(tfLifeSpan.getText());
-        controller.onOkAction(size,lifeSpan);
+        controller.onOkAction(fieldSize,lifeSpan);
         dispose();
     }
 
@@ -150,8 +150,8 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
            int w=Integer.parseInt(tfWidth.getText());
            int h=Integer.parseInt(tfHeight.getText());
 
-           enabled=!(w < MIN_SIZE || h < MIN_SIZE) &&
-                   !(w>MAX_SIZE||h>MAX_SIZE)&&
+           enabled=!(w < minSize || h < minSize) &&
+                   !(w>maxSize||h>maxSize)&&
                    !tfLifeSpan.getText().isEmpty();
         }
         catch (NumberFormatException ex) {

@@ -2,6 +2,7 @@ package com.epam.dmitrii_elagin.life.view;
 
 
 
+import com.epam.dmitrii_elagin.life.Main;
 import com.epam.dmitrii_elagin.life.controller.MainController;
 import com.epam.dmitrii_elagin.life.model.Model;
 import com.epam.dmitrii_elagin.life.model.ModelEvent;
@@ -17,8 +18,8 @@ public class MainFrame extends Frame implements ActionListener, ModelListener{
 
     private static final int WIDTH=800;
     private static final int HEIGHT=800;
-    private static final int MIN_WIDTH=600;
-    private static final int MIN_HEIGHT=300;
+
+
 
     private MainController controller;
 
@@ -44,9 +45,6 @@ public class MainFrame extends Frame implements ActionListener, ModelListener{
 
         this.controller=controller;
 
-        //Установка размеров поля по-умолчанию
-        fieldSize=new Dimension(Model.WIDTH,Model.HEIGHT);
-
 
         initUI();
     }
@@ -59,9 +57,9 @@ public class MainFrame extends Frame implements ActionListener, ModelListener{
     private void initUI() {
         setTitle("Life");
 
-        setSize(WIDTH, HEIGHT);
+        setSize(Main.getProperty(Main.MAIN_WIDTH), Main.getProperty(Main.MAIN_HEIGHT));
         setResizable(false);
-        setMinimumSize(new Dimension(MIN_WIDTH,MIN_HEIGHT));
+
 
         //Расположить окно по центру
         setLocationRelativeTo(null);
@@ -83,7 +81,7 @@ public class MainFrame extends Frame implements ActionListener, ModelListener{
 
 
         add(pnlMatrix,BorderLayout.CENTER);
-        createMatrix();
+
 
         createMenu();
 
@@ -165,6 +163,7 @@ public class MainFrame extends Frame implements ActionListener, ModelListener{
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         super.mouseClicked(e);
+
 
                         Cell c=(Cell) e.getSource();
 

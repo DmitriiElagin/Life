@@ -1,7 +1,6 @@
 package com.epam.dmitrii_elagin.life.controller;
 
 import com.epam.dmitrii_elagin.life.model.Model;
-import com.epam.dmitrii_elagin.life.view.MainFrame;
 import com.epam.dmitrii_elagin.life.view.SettingsDialog;
 
 import java.awt.*;
@@ -30,7 +29,7 @@ public class MainController {
         Dimension fieldSize = model.getFieldSize();
         SettingsDialog dialog =
                 new SettingsDialog(parent,settingsController,
-                        fieldSize.height, fieldSize.width,
+                        new Dimension(fieldSize.width, fieldSize.height),
                         model.getLifeSpan());
 
         dialog.setVisible(true);
