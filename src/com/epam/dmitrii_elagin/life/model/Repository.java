@@ -70,7 +70,7 @@ public class Repository implements Model {
        }
        sendEvent(new ModelEvent());
 
-        System.out.println(countNeighbors(p));
+
     }
 
 

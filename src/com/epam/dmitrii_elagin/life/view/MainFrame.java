@@ -10,7 +10,7 @@ import com.epam.dmitrii_elagin.life.model.ModelListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Collection;
-import java.util.Set;
+
 
 
 public class MainFrame extends Frame implements ActionListener, ModelListener{
@@ -123,7 +123,7 @@ public class MainFrame extends Frame implements ActionListener, ModelListener{
 
         btnStart=new Button("Start");
         btnStart.setPreferredSize(dimension);
-        Canvas canvas=new Canvas();
+
 
         btnStart.addActionListener(this);
         pnlControl.add(btnStart);
@@ -146,15 +146,32 @@ public class MainFrame extends Frame implements ActionListener, ModelListener{
         gridLayout.setColumns(fieldSize.width);
         gridLayout.setRows(fieldSize.height);
 
+        gridLayout.setVgap(1);
+        gridLayout.setHgap(1);
+
         pnlMatrix.removeAll();
 
-        for(int y=0; y<fieldSize.height; y++){
-            for(int x=0; x<fieldSize.width; x++){
-                Button button=new Button();
-                button.setBackground(Color.GRAY);
-                button.addActionListener(this);
 
-                pnlMatrix.add(button);
+
+        Cell cell;
+
+        for(int y=0,i=0; y<fieldSize.height; y++){
+            for(int x=0; x<fieldSize.width; x++, i++){
+                cell=new Cell();
+                cell.setBackground(Color.LIGHT_GRAY);
+                cell.setLocation(new Point(x,y));
+
+                cell.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        super.mouseClicked(e);
+
+                        Cell c=(Cell) e.getSource();
+
+                        controller.onCellClick(c.getLocation());
+                    }
+                });
+                pnlMatrix.add(cell);
             }
         }
         //Перерисовать панель
@@ -184,11 +201,6 @@ public class MainFrame extends Frame implements ActionListener, ModelListener{
                 controller.onStopAction();
                 dispose();
                 break;
-
-            default:
-               Point p=findLocation(e.getSource());
-                controller.onCellClick(p);
-
         }
     }
 
@@ -206,7 +218,6 @@ public class MainFrame extends Frame implements ActionListener, ModelListener{
             case DATA_CHANGED:
                 updateCells();
                 break;
-
         }
     }
 
@@ -222,7 +233,7 @@ public class MainFrame extends Frame implements ActionListener, ModelListener{
                 if(data.contains(point)) {
                     cells[i].setBackground(Color.green);
                 } else{
-                  cells[i].setBackground(Color.GRAY);
+                  cells[i].setBackground(Color.LIGHT_GRAY);
                 }
             }
          }
@@ -231,19 +242,7 @@ public class MainFrame extends Frame implements ActionListener, ModelListener{
 
     }
 
-    //ищет позицию компонента в матрице
-    private Point findLocation(Object obj) {
 
-        Component[] components = pnlMatrix.getComponents();
-        for(int y=0, i=0; y<fieldSize.height; y++) {
-            for(int x=0; x<fieldSize.width; x++,i++) {
-                if(components[i]==obj) {
-                    return new Point(x,y);
-                }
-            }
-        }
-        return null;
-    }
 
     private void setButtonsState(Model.State state) {
         if(state == Model.State.RUNNING) {
