@@ -115,7 +115,7 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
         panel.setPreferredSize(new Dimension(130,170));
         panel.setFont(font);
 
-        Dimension dimension=new Dimension(110,30);
+        Dimension dimension=new Dimension(120,30);
 
         addComponent(panel, new Label("Width:"),dimension);
         addComponent(panel,new Label("Height:"),dimension);

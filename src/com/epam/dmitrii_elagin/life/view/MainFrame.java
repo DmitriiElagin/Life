@@ -117,7 +117,7 @@ public class MainFrame extends Frame implements ActionListener, ModelListener{
         pnlControl.setFont(font);
 
         //Создать размерность конопок управления
-        Dimension dimension=new Dimension(150,30);
+        Dimension dimension=new Dimension(150,50);
 
         btnStart=new Button("Start");
         btnStart.setPreferredSize(dimension);
