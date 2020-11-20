@@ -13,7 +13,7 @@ public interface IModel {
 
     void setFieldSize(Dimension dimension);
 
-    Collection<Point> getData();
+    Collection<Point> getColony();
 
     Dimension getFieldSize();
 

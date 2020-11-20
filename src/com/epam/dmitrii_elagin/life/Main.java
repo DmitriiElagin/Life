@@ -30,7 +30,7 @@ public class Main {
 
         MainFrame frame=new MainFrame(new MainController(model));
 
-        frame.setData(model.getData());
+        frame.setData(model.getColony());
 
         model.registerListener(frame);
 

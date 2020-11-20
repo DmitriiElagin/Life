@@ -10,8 +10,8 @@ public class ModelEvent {
 
     private ModelEventType eventType;
 
-    public ModelEvent() {
-        eventType=ModelEventType.DATA_CHANGED;
+    public ModelEvent(ModelEventType eventType) {
+        this.eventType=eventType;
     }
 
     public ModelEvent(IModel.State state) {
