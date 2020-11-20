@@ -4,7 +4,7 @@ package com.epam.dmitrii_elagin.life.view;
 
 import com.epam.dmitrii_elagin.life.Main;
 import com.epam.dmitrii_elagin.life.controller.MainController;
-import com.epam.dmitrii_elagin.life.model.Model;
+import com.epam.dmitrii_elagin.life.model.IModel;
 import com.epam.dmitrii_elagin.life.model.ModelEvent;
 import com.epam.dmitrii_elagin.life.model.ModelListener;
 
@@ -15,10 +15,6 @@ import java.util.Collection;
 
 
 public class MainFrame extends Frame implements ActionListener, ModelListener{
-
-    private static final int WIDTH=800;
-    private static final int HEIGHT=800;
-
 
 
     private MainController controller;
@@ -243,12 +239,12 @@ public class MainFrame extends Frame implements ActionListener, ModelListener{
 
 
 
-    private void setButtonsState(Model.State state) {
-        if(state == Model.State.RUNNING) {
+    private void setButtonsState(IModel.State state) {
+        if(state == IModel.State.RUNNING) {
             btnStart.setEnabled(false);
             btnStart.setLabel("Running...");
             btnClear.setEnabled(false);
-        } else if(state == Model.State.STOPPED){
+        } else if(state == IModel.State.STOPPED){
             btnStart.setEnabled(true);
             btnStart.setLabel("Start");
             btnClear.setEnabled(true);

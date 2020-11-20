@@ -1,15 +1,15 @@
 package com.epam.dmitrii_elagin.life.controller;
 
-import com.epam.dmitrii_elagin.life.model.Model;
+import com.epam.dmitrii_elagin.life.model.IModel;
 import com.epam.dmitrii_elagin.life.view.SettingsDialog;
 
 import java.awt.*;
 
 public class MainController {
 
-    private Model model;
+    private IModel model;
 
-    public MainController(Model model){
+    public MainController(IModel model){
         this.model=model;
     }
     

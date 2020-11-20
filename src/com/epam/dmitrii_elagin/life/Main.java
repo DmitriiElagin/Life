@@ -2,8 +2,8 @@ package com.epam.dmitrii_elagin.life;
 
 import com.epam.dmitrii_elagin.life.controller.MainController;
 import com.epam.dmitrii_elagin.life.controller.SettingsController;
+import com.epam.dmitrii_elagin.life.model.IModel;
 import com.epam.dmitrii_elagin.life.model.Model;
-import com.epam.dmitrii_elagin.life.model.Repository;
 import com.epam.dmitrii_elagin.life.view.MainFrame;
 import com.epam.dmitrii_elagin.life.view.SettingsDialog;
 
@@ -25,7 +25,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Model model=new Repository();
+        IModel model=new Model();
 
 
         MainFrame frame=new MainFrame(new MainController(model));

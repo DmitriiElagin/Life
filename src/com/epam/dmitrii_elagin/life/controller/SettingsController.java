@@ -1,16 +1,16 @@
 package com.epam.dmitrii_elagin.life.controller;
 
 import com.epam.dmitrii_elagin.life.Main;
-import com.epam.dmitrii_elagin.life.model.Model;
+import com.epam.dmitrii_elagin.life.model.IModel;
 
 import java.awt.*;
 
 
 public class SettingsController {
 
-    private Model model;
+    private IModel model;
 
-    public SettingsController(Model model) {
+    public SettingsController(IModel model) {
         this.model=model;
     }
 
