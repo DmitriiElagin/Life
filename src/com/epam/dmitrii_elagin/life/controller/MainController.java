@@ -7,12 +7,12 @@ import java.awt.*;
 
 public class MainController {
 
-    private IModel model;
+    private final IModel model;
 
-    public MainController(IModel model){
-        this.model=model;
+    public MainController(IModel model) {
+        this.model = model;
     }
-    
+
 
     public void onClearAction() {
         model.clearField();
@@ -23,12 +23,12 @@ public class MainController {
 
         model.stopSimulation();
 
-        SettingsController settingsController=
+        SettingsController settingsController =
                 new SettingsController(model);
 
         Dimension fieldSize = model.getFieldSize();
         SettingsDialog dialog =
-                new SettingsDialog(parent,settingsController,
+                new SettingsDialog(parent, settingsController,
                         new Dimension(fieldSize.width, fieldSize.height),
                         model.getLifeSpan());
 

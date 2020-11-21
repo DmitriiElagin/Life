@@ -1,46 +1,35 @@
 package com.epam.dmitrii_elagin.life.view;
 
 
-
 import com.epam.dmitrii_elagin.life.Main;
 import com.epam.dmitrii_elagin.life.controller.MainController;
 import com.epam.dmitrii_elagin.life.model.IModel;
 import com.epam.dmitrii_elagin.life.model.ModelEvent;
-import com.epam.dmitrii_elagin.life.model.ModelListener;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Collection;
 
 
+public class MainFrame extends Frame implements ActionListener, ModelListener {
 
-public class MainFrame extends Frame implements ActionListener, ModelListener{
 
-
-    private MainController controller;
+    private final MainController controller;
 
     private Dimension fieldSize;
 
     private Collection<Point> data;
 
-
     private Button btnStart;
-    private Button btnStop;
     private Button btnClear;
-
-
 
     //Панель для размещения матрицы
     private Panel pnlMatrix;
 
     private GridLayout gridLayout;
 
-
-
     public MainFrame(MainController controller) {
-
-        this.controller=controller;
-
+        this.controller = controller;
 
         initUI();
     }
@@ -54,6 +43,11 @@ public class MainFrame extends Frame implements ActionListener, ModelListener{
         setTitle("Life");
 
         setSize(Main.getProperty(Main.MAIN_WIDTH), Main.getProperty(Main.MAIN_HEIGHT));
+
+        //Установить размер поля по-умолчанию
+        int size = Main.getProperty(Main.FIELD_SIZE);
+        fieldSize = new Dimension(size, size);
+
         setResizable(false);
 
 
@@ -70,13 +64,13 @@ public class MainFrame extends Frame implements ActionListener, ModelListener{
             }
         });
 
-        gridLayout=new GridLayout();
+        gridLayout = new GridLayout();
 
-        pnlMatrix=new Panel(gridLayout);
+        pnlMatrix = new Panel(gridLayout);
 
+        createMatrix();
 
-
-        add(pnlMatrix,BorderLayout.CENTER);
+        add(pnlMatrix, BorderLayout.CENTER);
 
 
         createMenu();
@@ -85,15 +79,15 @@ public class MainFrame extends Frame implements ActionListener, ModelListener{
     }
 
     private void createMenu() {
-        Font font=new Font(Font.SANS_SERIF,Font.PLAIN,20);
+        Font font = new Font(Font.SANS_SERIF, Font.PLAIN, 20);
 
-        MenuBar menuBar=new MenuBar();
-        Menu menu=new Menu("Menu");
+        MenuBar menuBar = new MenuBar();
+        Menu menu = new Menu("Menu");
         menu.setFont(font);
 
-        MenuItem miSettings=new MenuItem("Settings");
+        MenuItem miSettings = new MenuItem("Settings");
         miSettings.addActionListener(this);
-        MenuItem miExit=new MenuItem("Exit");
+        MenuItem miExit = new MenuItem("Exit");
         miExit.addActionListener(this);
 
         menu.add(miSettings);
@@ -101,37 +95,37 @@ public class MainFrame extends Frame implements ActionListener, ModelListener{
         menuBar.add(menu);
         setMenuBar(menuBar);
     }
+
     //Создать панель с кнопками управления
     private void createControlPanel() {
         //Создать панель для кнопок управления
         Panel pnlControl = new Panel();
-        pnlControl.setLayout(new FlowLayout(FlowLayout.CENTER,30,10));
+        pnlControl.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 10));
 
         //Создать шрифт для кнопок управления
-        Font font = new Font(Font.SANS_SERIF,Font.PLAIN,26);
+        Font font = new Font(Font.SANS_SERIF, Font.PLAIN, 26);
 
         pnlControl.setFont(font);
 
         //Создать размерность конопок управления
-        Dimension dimension=new Dimension(150,50);
+        Dimension dimension = new Dimension(150, 50);
 
-        btnStart=new Button("Start");
+        btnStart = new Button("Start");
         btnStart.setPreferredSize(dimension);
-
 
         btnStart.addActionListener(this);
         pnlControl.add(btnStart);
 
-        btnStop=new Button("Stop");
+        Button btnStop = new Button("Stop");
         btnStop.setPreferredSize(dimension);
         btnStop.addActionListener(this);
         pnlControl.add(btnStop);
 
-        btnClear=new Button("Clear");
+        btnClear = new Button("Clear");
         btnClear.setPreferredSize(dimension);
         btnClear.addActionListener(this);
         pnlControl.add(btnClear);
-        add(pnlControl,BorderLayout.SOUTH);
+        add(pnlControl, BorderLayout.SOUTH);
     }
 
     //Создает и настраивает матрицу компонентов с размерностью поля
@@ -145,23 +139,18 @@ public class MainFrame extends Frame implements ActionListener, ModelListener{
 
         pnlMatrix.removeAll();
 
-
-
         Cell cell;
 
-        for(int y=0,i=0; y<fieldSize.height; y++){
-            for(int x=0; x<fieldSize.width; x++, i++){
-                cell=new Cell();
+        for (int y = 0, i = 0; y < fieldSize.height; y++) {
+            for (int x = 0; x < fieldSize.width; x++, i++) {
+                cell = new Cell();
                 cell.setBackground(Color.LIGHT_GRAY);
-                cell.setLocation(new Point(x,y));
+                cell.setLocation(new Point(x, y));
 
                 cell.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent e) {
-                        super.mouseClicked(e);
-
-
-                        Cell c=(Cell) e.getSource();
+                        Cell c = (Cell) e.getSource();
 
                         controller.onCellClick(c.getLocation());
                     }
@@ -202,14 +191,14 @@ public class MainFrame extends Frame implements ActionListener, ModelListener{
     @Override
     public void handleEvent(ModelEvent event) {
 
-        switch (event.getEventType()){
+        switch (event.getEventType()) {
             case STATE_CHANGED:
-               setButtonsState(event.getState());
+                setButtonsState(event.getState());
                 break;
             case FIELD_SIZE_CHANGED:
-               fieldSize = event.getSize();
-               createMatrix();
-               break;
+                fieldSize = event.getSize();
+                createMatrix();
+                break;
             case DATA_CHANGED:
                 updateCells();
                 break;
@@ -220,31 +209,26 @@ public class MainFrame extends Frame implements ActionListener, ModelListener{
     private void updateCells() {
 
         Component[] cells = pnlMatrix.getComponents();
-        Point point=new Point();
-         for(int y=0, i=0; y<fieldSize.height; y++) {
-            for(int x=0; x<fieldSize.width; x++,i++) {
-                point.setLocation(x,y);
+        Point point = new Point();
+        for (int y = 0, i = 0; y < fieldSize.height; y++) {
+            for (int x = 0; x < fieldSize.width; x++, i++) {
+                point.setLocation(x, y);
 
-                if(data.contains(point)) {
+                if (data.contains(point)) {
                     cells[i].setBackground(Color.green);
-                } else{
-                  cells[i].setBackground(Color.LIGHT_GRAY);
+                } else {
+                    cells[i].setBackground(Color.LIGHT_GRAY);
                 }
             }
-         }
-
-
-
+        }
     }
 
-
-
     private void setButtonsState(IModel.State state) {
-        if(state == IModel.State.RUNNING) {
+        if (state == IModel.State.RUNNING) {
             btnStart.setEnabled(false);
             btnStart.setLabel("Running...");
             btnClear.setEnabled(false);
-        } else if(state == IModel.State.STOPPED){
+        } else if (state == IModel.State.STOPPED) {
             btnStart.setEnabled(true);
             btnStart.setLabel("Start");
             btnClear.setEnabled(true);

@@ -6,41 +6,38 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-//Runnable, отчечающий за появление бактерий
+//Вычисляет клетки, в которых надо создать  новые бактерии
 public class Creator implements Callable<List<Point>> {
 
     private final Model model;
 
     Creator(Model model) {
-        this.model=model;
+        this.model = model;
     }
 
     @Override
     public List<Point> call() {
+        List<Point> result = new LinkedList<>();
 
-        System.out.println("Создатель начал работу...");
+        Dimension fieldSize = model.getFieldSize();
 
-        List<Point> result=new LinkedList<>();
+        Collection<Point> colony = model.getColony();
 
-        Dimension fieldSize=model.getFieldSize();
+        for (int y = 0; y < fieldSize.height; y++) {
+            for (int x = 0; x < fieldSize.width; x++) {
+                Point point = new Point(x, y);
 
-        Collection<Point> colony=model.getColony();
+                if (!colony.contains(point)) {
+                    //Посчитать колл-во соседних занятых клеток
+                    int n = model.countNeighbors(point);
 
-        for(int y=0; y<fieldSize.height; y++) {
-            for(int x=0; x<fieldSize.width; x++) {
-                Point point=new Point(x,y);
-
-                if(!colony.contains(point)) {
-                    //Посчитать соседние бактерии
-                    int n=model.countNeighbors(point);
-
-                    if(n>Model.LONELINESS&&n<Model.TIGHTNESS) {
+                    if (n > Model.LONELINESS && n < Model.TIGHTNESS) {
                         result.add(point);
                     }
                 }
             }
         }
-        System.out.println("Создатель завершил работу...");
+
         return result;
     }
 }

@@ -1,19 +1,17 @@
 package com.epam.dmitrii_elagin.life.view;
 
 
-
 import com.epam.dmitrii_elagin.life.Main;
 import com.epam.dmitrii_elagin.life.controller.SettingsController;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ResourceBundle;
 
 //Окно настроек приложения
 public class SettingsDialog extends Dialog implements ActionListener, TextListener, KeyListener {
 
     //Колл-во колонок текстовых полей
-    private static final int TF_COLUMNS=3;
+    private static final int TF_COLUMNS = 3;
 
     private final SettingsController controller;
 
@@ -41,10 +39,10 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
 
     public SettingsDialog(Frame parent, SettingsController controller,
                           Dimension fieldSize, int lifeSpan) {
-        super(parent,true);
-        this.fieldSize=fieldSize;
-        this.lifeSpan=lifeSpan;
-        this.controller=controller;
+        super(parent, true);
+        this.fieldSize = fieldSize;
+        this.lifeSpan = lifeSpan;
+        this.controller = controller;
 
         initUI();
     }
@@ -59,12 +57,12 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
         setSize(Main.getProperty(Main.SETTINGS_WIDTH),
                 Main.getProperty(Main.SETTINGS_HEIGHT));
 
-        minSize=Main.getProperty(Main.MIN_SIZE);
-        maxSize=Main.getProperty(Main.MAX_SIZE);
+        minSize = Main.getProperty(Main.MIN_SIZE);
+        maxSize = Main.getProperty(Main.MAX_SIZE);
 
         setResizable(false);
 
-        setLayout(new FlowLayout(FlowLayout.CENTER,50,15));
+        setLayout(new FlowLayout(FlowLayout.CENTER, 50, 15));
 
         addWindowListener(new WindowAdapter() {
             @Override
@@ -78,66 +76,65 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
         add(createLabelPanel());
         add(createTextFieldPanel());
 
-        btnOk=new Button("OK");
-        btnOk.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,20));
-        btnOk.setPreferredSize(new Dimension(150,35));
+        btnOk = new Button("OK");
+        btnOk.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 20));
+        btnOk.setPreferredSize(new Dimension(150, 35));
         btnOk.addActionListener(this);
         add(btnOk);
 
     }
 
     private Panel createTextFieldPanel() {
-        Panel panel=new Panel(new FlowLayout(FlowLayout.CENTER,0,15));
-        Font font =new Font(Font.SANS_SERIF,Font.PLAIN,24);
-        panel.setPreferredSize(new Dimension(100,170));
+        Panel panel = new Panel(new FlowLayout(FlowLayout.CENTER, 0, 15));
+        Font font = new Font(Font.SANS_SERIF, Font.PLAIN, 24);
+        panel.setPreferredSize(new Dimension(100, 170));
         panel.setFont(font);
 
-        tfWidth=new TextField(""+fieldSize.width,TF_COLUMNS);
+        tfWidth = new TextField("" + fieldSize.width, TF_COLUMNS);
         tfWidth.addTextListener(this);
         tfWidth.addKeyListener(this);
-        addComponent(panel,tfWidth, null);
-        tfHeight=new TextField(""+fieldSize.height,TF_COLUMNS);
+        addComponent(panel, tfWidth, null);
+        tfHeight = new TextField("" + fieldSize.height, TF_COLUMNS);
         tfHeight.addKeyListener(this);
         tfHeight.addTextListener(this);
-        addComponent(panel,tfHeight, null);
-        tfLifeSpan=new TextField(""+lifeSpan,TF_COLUMNS);
+        addComponent(panel, tfHeight, null);
+        tfLifeSpan = new TextField("" + lifeSpan, TF_COLUMNS);
         tfLifeSpan.addKeyListener(this);
         tfLifeSpan.addTextListener(this);
-        addComponent(panel,tfLifeSpan, null);
+        addComponent(panel, tfLifeSpan, null);
 
         return panel;
     }
 
     private Panel createLabelPanel() {
-        Font font =new Font(Font.SANS_SERIF,Font.BOLD,24);
+        Font font = new Font(Font.SANS_SERIF, Font.BOLD, 24);
 
-        Panel panel=new Panel(new FlowLayout(FlowLayout.CENTER,0,20));
-        panel.setPreferredSize(new Dimension(130,170));
+        Panel panel = new Panel(new FlowLayout(FlowLayout.CENTER, 0, 20));
+        panel.setPreferredSize(new Dimension(130, 170));
         panel.setFont(font);
 
-        Dimension dimension=new Dimension(120,30);
+        Dimension dimension = new Dimension(120, 30);
 
-        addComponent(panel, new Label("Width:"),dimension);
-        addComponent(panel,new Label("Height:"),dimension);
-        addComponent(panel,new Label("Life Span:"),dimension);
+        addComponent(panel, new Label("Width:"), dimension);
+        addComponent(panel, new Label("Height:"), dimension);
+        addComponent(panel, new Label("Life Span:"), dimension);
 
         return panel;
 
     }
 
 
-
-    private void addComponent(Container container,Component comp, Dimension dimen) {
+    private void addComponent(Container container, Component comp, Dimension dimen) {
         comp.setPreferredSize(dimen);
         container.add(comp);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        fieldSize.height=Integer.parseInt(tfHeight.getText());
-        fieldSize.width=Integer.parseInt(tfWidth.getText());
-        lifeSpan=Integer.parseInt(tfLifeSpan.getText());
-        controller.onOkAction(fieldSize,lifeSpan);
+        fieldSize.height = Integer.parseInt(tfHeight.getText());
+        fieldSize.width = Integer.parseInt(tfWidth.getText());
+        lifeSpan = Integer.parseInt(tfLifeSpan.getText());
+        controller.onOkAction(fieldSize, lifeSpan);
         dispose();
     }
 
@@ -147,25 +144,24 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
 
         //Запретить кнопку, если значения полей выходят за пределы разрешенных или отсутствуют
         try {
-           int w=Integer.parseInt(tfWidth.getText());
-           int h=Integer.parseInt(tfHeight.getText());
+            int w = Integer.parseInt(tfWidth.getText());
+            int h = Integer.parseInt(tfHeight.getText());
 
-           enabled=!(w < minSize || h < minSize) &&
-                   !(w>maxSize||h>maxSize)&&
-                   !tfLifeSpan.getText().isEmpty();
-        }
-        catch (NumberFormatException ex) {
-           enabled=false;
+            enabled = !(w < minSize || h < minSize) &&
+                    !(w > maxSize || h > maxSize) &&
+                    !tfLifeSpan.getText().isEmpty();
+        } catch (NumberFormatException ex) {
+            enabled = false;
         }
         btnOk.setEnabled(enabled);
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
-        char c=e.getKeyChar();
+        char c = e.getKeyChar();
 
         //Вводить только цифры
-        if(!Character.isDigit(c)){
+        if (!Character.isDigit(c)) {
             e.setKeyChar('\0');
         }
 

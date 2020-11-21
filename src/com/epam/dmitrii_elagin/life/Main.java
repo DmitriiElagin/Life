@@ -25,29 +25,29 @@ public class Main {
 
     public static void main(String[] args) {
 
-        IModel model=new Model();
+        IModel model = new Model();
 
 
-        MainFrame frame=new MainFrame(new MainController(model));
+        MainFrame frame = new MainFrame(new MainController(model));
 
         frame.setData(model.getColony());
 
         model.registerListener(frame);
 
-        int size=getProperty(FIELD_SIZE);
+        int size = getProperty(FIELD_SIZE);
 
-        SettingsDialog settingsFrame=
+        SettingsDialog settingsFrame =
                 new SettingsDialog(frame, new SettingsController(model),
-                        new Dimension(size,size),getProperty(LIFE_SPAN));
+                        new Dimension(size, size), getProperty(LIFE_SPAN));
         settingsFrame.setVisible(true);
         frame.setVisible(true);
 
     }
 
 
-public static int getProperty(String key) {
+    public static int getProperty(String key) {
         String s = ResourceBundle.getBundle("settings").getString(key);
         return Integer.parseInt(s);
-}
+    }
 
 }

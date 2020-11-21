@@ -1,5 +1,8 @@
 package com.epam.dmitrii_elagin.life.model;
 
+import com.epam.dmitrii_elagin.life.Main;
+import com.epam.dmitrii_elagin.life.view.ModelListener;
+
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -7,9 +10,9 @@ import java.util.List;
 
 public class Model implements IModel {
 
-    public static final int LONELINESS=2;
+    public static final int LONELINESS = 2;
 
-    public static final int TIGHTNESS=4;
+    public static final int TIGHTNESS = 4;
 
     //Размер поля
     private Dimension fieldSize;
@@ -17,22 +20,32 @@ public class Model implements IModel {
     //Продолжительность жизни колонии
     private int lifeSpan;
 
+    //Состояние приложения. Выполняется симуляция или нет.
     private State state;
 
-    //Набор координат занятых ячеек
+    //Коллекция координат занятых клеток
     private final Collection<Point> colony;
 
     private final List<ModelListener> listeners;
 
     public Model() {
-        listeners=new LinkedList<>();
+        listeners = new LinkedList<>();
 
         colony = Collections.synchronizedCollection(new HashSet<>());
 
-        state=State.STOPPED;
+        state = State.STOPPED;
+
+        //Установить размер поля по-умолчанию
+        int size = Main.getProperty(Main.FIELD_SIZE);
+        fieldSize = new Dimension(size, size);
+
+        //Установить продолжительность жизни колонии по-умолчинию
+        setLifeSpan(Main.getProperty(Main.LIFE_SPAN));
+
+
     }
 
-     State getState() {
+    State getState() {
         return state;
     }
 
@@ -42,28 +55,33 @@ public class Model implements IModel {
     }
 
     //Заполнить поле произвольно
-    void randomlyFill(){
-        Random random=new Random(System.currentTimeMillis());
-        for(int y=0; y<fieldSize.height; y++){
-            for(int x=0; x<fieldSize.width; x++){
-                if(random.nextBoolean()){
-                    colony.add(new Point(x,y));
+    void randomlyFill() {
+        Random random = new Random(System.currentTimeMillis());
+        for (int y = 0; y < fieldSize.height; y++) {
+            for (int x = 0; x < fieldSize.width; x++) {
+                if (random.nextBoolean()) {
+                    colony.add(new Point(x, y));
                 }
             }
         }
     }
 
-    //Считать колл-во соседних клеток, заполненных бактериями
-    int countNeighbors(Point p){
-        int i=0;
-        Point point=new Point();
-        for(int y=p.y-1;y<=p.y+1;y++){
-            for(int x=p.x-1; x<=p.x+1; x++) {
-                point.setLocation(x,y);
-                if(point.equals(p)){
+    //Считать колл-во занятых соседних клеток
+    int countNeighbors(Point p) {
+        int i = 0;
+
+        Point point = new Point();
+
+        for (int y = p.y - 1; y <= p.y + 1; y++) {
+            for (int x = p.x - 1; x <= p.x + 1; x++) {
+
+                point.setLocation(x, y);
+
+                if (point.equals(p)) {
                     continue;
                 }
-                if(colony.contains(point)) {
+
+                if (colony.contains(point)) {
                     i++;
                 }
             }
@@ -74,20 +92,25 @@ public class Model implements IModel {
     //Добаляет Point, если ее нет в наборе, иначе удаляет ее
     @Override
     public void switchCell(Point p) {
-       if(!colony.add(p)) {
-           colony.remove(p);
-       }
-       sendEvent(new ModelEvent(ModelEvent.ModelEventType.DATA_CHANGED));
+        if (!colony.add(p)) {
+            colony.remove(p);
+        }
+        sendEvent(new ModelEvent(ModelEvent.ModelEventType.DATA_CHANGED));
 
     }
 
     @Override
     public void setFieldSize(Dimension dimension) {
-        this.fieldSize=dimension;
 
-        colony.clear();
+        if (!dimension.equals(fieldSize)) {
+            this.fieldSize = dimension;
 
-        sendEvent(new ModelEvent(dimension));
+            colony.clear();
+
+            sendEvent(new ModelEvent(dimension));
+        }
+
+
     }
 
     @Override
@@ -102,7 +125,7 @@ public class Model implements IModel {
 
     @Override
     public void setLifeSpan(int lifeSpan) {
-        this.lifeSpan=lifeSpan;
+        this.lifeSpan = lifeSpan;
     }
 
     @Override
@@ -118,13 +141,13 @@ public class Model implements IModel {
 
     @Override
     public void stopSimulation() {
-        state=State.STOPPED;
+        state = State.STOPPED;
     }
 
     @Override
     public void clearField() {
-            colony.clear();
-            sendEvent(new ModelEvent(ModelEvent.ModelEventType.DATA_CHANGED));
+        colony.clear();
+        sendEvent(new ModelEvent(ModelEvent.ModelEventType.DATA_CHANGED));
     }
 
     @Override
@@ -139,7 +162,7 @@ public class Model implements IModel {
 
     @Override
     public void sendEvent(ModelEvent event) {
-        for(ModelListener listener:listeners) {
+        for (ModelListener listener : listeners) {
             listener.handleEvent(event);
         }
 

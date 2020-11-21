@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.*;
 
-//Класс потока, управляющиго процессом моделирования
+//Поток, управляющий процессом моделирования
 class ControlThread extends Thread {
 
     private final Collection<Point> colony;
@@ -14,14 +14,14 @@ class ControlThread extends Thread {
 
     ControlThread(Model model) {
 
-        this.model=model;
+        this.model = model;
 
         this.colony = model.getColony();
     }
 
     @Override
     public void run() {
-        boolean isRunning=true;
+        boolean isRunning = true;
 
         //Возраст колонии
         int age = 0;
@@ -29,8 +29,8 @@ class ControlThread extends Thread {
         //Переключить состояние приложения
         model.setState(IModel.State.RUNNING);
 
-       //Если колония пуста, заполнить поле рандомно
-        if(model.getColony().isEmpty()) {
+        //Если колония пуста, заполнить поле рандомно
+        if (model.getColony().isEmpty()) {
             model.randomlyFill();
 
             model.sendEvent(new ModelEvent(ModelEvent.ModelEventType.DATA_CHANGED));
@@ -63,10 +63,9 @@ class ControlThread extends Thread {
                 age++;
 
                 //условие выполнения цикла
-                isRunning=(age <=model.getLifeSpan())&&
-                        (model.getState()== IModel.State.RUNNING)&&
+                isRunning = (age <= model.getLifeSpan()) &&
+                        (model.getState() == IModel.State.RUNNING) &&
                         (!colony.isEmpty());
-
 
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();

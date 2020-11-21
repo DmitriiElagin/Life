@@ -1,5 +1,7 @@
 package com.epam.dmitrii_elagin.life.model;
 
+import com.epam.dmitrii_elagin.life.view.ModelListener;
+
 import java.awt.*;
 import java.util.Collection;
 
@@ -32,8 +34,6 @@ public interface IModel {
     void removeListener(ModelListener listener);
 
     void sendEvent(ModelEvent event);
-
-
 
 
 }

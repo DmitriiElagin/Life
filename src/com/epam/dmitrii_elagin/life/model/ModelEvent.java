@@ -8,20 +8,20 @@ public class ModelEvent {
 
     private Dimension size;
 
-    private ModelEventType eventType;
+    private final ModelEventType eventType;
 
     public ModelEvent(ModelEventType eventType) {
-        this.eventType=eventType;
+        this.eventType = eventType;
     }
 
     public ModelEvent(IModel.State state) {
         this.state = state;
-        this.eventType=ModelEventType.STATE_CHANGED;
+        this.eventType = ModelEventType.STATE_CHANGED;
     }
 
     public ModelEvent(Dimension size) {
         this.size = size;
-        this.eventType=ModelEventType.FIELD_SIZE_CHANGED;
+        this.eventType = ModelEventType.FIELD_SIZE_CHANGED;
     }
 
     public IModel.State getState() {
