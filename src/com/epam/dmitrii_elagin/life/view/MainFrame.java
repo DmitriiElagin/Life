@@ -48,7 +48,7 @@ public class MainFrame extends Frame implements ActionListener, ModelListener {
         int size = Main.getProperty(Main.FIELD_SIZE);
         fieldSize = new Dimension(size, size);
 
-        setResizable(false);
+        setResizable(true);
 
 
         //Расположить окно по центру
@@ -139,27 +139,6 @@ public class MainFrame extends Frame implements ActionListener, ModelListener {
 
         pnlMatrix.removeAll();
 
-        Cell cell;
-
-        for (int y = 0, i = 0; y < fieldSize.height; y++) {
-            for (int x = 0; x < fieldSize.width; x++, i++) {
-                cell = new Cell();
-                cell.setBackground(Color.LIGHT_GRAY);
-                cell.setLocation(new Point(x, y));
-
-                cell.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        Cell c = (Cell) e.getSource();
-
-                        controller.onCellClick(c.getLocation());
-                    }
-                });
-                pnlMatrix.add(cell);
-            }
-        }
-        //Перерисовать панель
-        pnlMatrix.revalidate();
     }
 
     @Override
@@ -208,19 +187,7 @@ public class MainFrame extends Frame implements ActionListener, ModelListener {
     //Обновляет отображение ячеек в соответствии с данными
     private void updateCells() {
 
-        Component[] cells = pnlMatrix.getComponents();
-        Point point = new Point();
-        for (int y = 0, i = 0; y < fieldSize.height; y++) {
-            for (int x = 0; x < fieldSize.width; x++, i++) {
-                point.setLocation(x, y);
 
-                if (data.contains(point)) {
-                    cells[i].setBackground(Color.green);
-                } else {
-                    cells[i].setBackground(Color.LIGHT_GRAY);
-                }
-            }
-        }
     }
 
     private void setButtonsState(IModel.State state) {

@@ -39,7 +39,9 @@ public class Main {
         SettingsDialog settingsFrame =
                 new SettingsDialog(frame, new SettingsController(model),
                         new Dimension(size, size), getProperty(LIFE_SPAN));
+
         settingsFrame.setVisible(true);
+
         frame.setVisible(true);
 
     }
