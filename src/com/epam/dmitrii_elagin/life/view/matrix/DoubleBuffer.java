@@ -1,11 +1,10 @@
-package com.epam.dmitrii_elagin.life.view;
+package com.epam.dmitrii_elagin.life.view.matrix;
 
 import java.awt.*;
 
-public abstract class DoubleBuffer extends Canvas{
+abstract class DoubleBuffer extends Canvas {
 
-    private int bufferWidth;
-    private int bufferHeight;
+    private final Dimension bufferSize;
 
     //Внеэкранный буфер
     private Image buffer;
@@ -13,6 +12,10 @@ public abstract class DoubleBuffer extends Canvas{
     //Графика внеэкранного буфера
     private Graphics bufferGraphics;
 
+    public DoubleBuffer() {
+
+        bufferSize=new Dimension();
+    }
 
     @Override
     public void update(Graphics g) {
@@ -22,23 +25,21 @@ public abstract class DoubleBuffer extends Canvas{
     @Override
     public void paint(Graphics g) {
         //Создать новый буфер, если он не создан, или его размеры не совпадаютс канвой
-        if (bufferWidth != getSize().width||
-                bufferHeight != getSize().height ||
+        if (!bufferSize.equals(getSize())||
                 buffer == null || bufferGraphics == null) {
 
             resetBuffer();
         }
 
-
-        if(bufferGraphics != null) {
-            bufferGraphics.clearRect(0,0,bufferWidth,bufferHeight);
+        if (bufferGraphics != null) {
+            bufferGraphics.clearRect(0, 0, bufferSize.width, bufferSize.height);
         }
 
         //Рисовать на графике внеэкранного буфера
         paintBuffer(bufferGraphics);
 
         //Нарисовать изображение буфера на канве
-        g.drawImage(buffer,0,0,this);
+        g.drawImage(buffer, 0, 0, this);
 
     }
 
@@ -47,8 +48,7 @@ public abstract class DoubleBuffer extends Canvas{
 
     //Создает новый внеэкранный буфер
     private void resetBuffer() {
-        bufferWidth = getSize().width;
-        bufferHeight = getSize().height;
+        getSize(bufferSize);
 
         if (bufferGraphics != null) {
             //Очистка предыдущего изобразения
@@ -64,11 +64,8 @@ public abstract class DoubleBuffer extends Canvas{
         //Вызвать сборщик мусора
         System.gc();
 
-        buffer = createImage(bufferWidth,bufferHeight);
+        buffer = createImage(bufferSize.width, bufferSize.height);
         bufferGraphics = buffer.getGraphics();
     }
-
-
-
 
 }

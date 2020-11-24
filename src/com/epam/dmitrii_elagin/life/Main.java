@@ -27,10 +27,7 @@ public class Main {
 
         IModel model = new Model();
 
-
-        MainFrame frame = new MainFrame(new MainController(model));
-
-        frame.setData(model.getColony());
+        MainFrame frame = new MainFrame(new MainController(model), model.getColony());
 
         model.registerListener(frame);
 

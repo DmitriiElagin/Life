@@ -5,31 +5,33 @@ import com.epam.dmitrii_elagin.life.Main;
 import com.epam.dmitrii_elagin.life.controller.MainController;
 import com.epam.dmitrii_elagin.life.model.IModel;
 import com.epam.dmitrii_elagin.life.model.ModelEvent;
+import com.epam.dmitrii_elagin.life.view.matrix.CellClickListener;
+import com.epam.dmitrii_elagin.life.view.matrix.Matrix;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Collection;
 
 
-public class MainFrame extends Frame implements ActionListener, ModelListener {
-
+public class MainFrame extends Frame implements ActionListener, ModelListener, CellClickListener {
 
     private final MainController controller;
 
+    //Размер игрового поля
     private Dimension fieldSize;
 
+    //Данные из модели
     private Collection<Point> data;
+
+    private Matrix matrix;
 
     private Button btnStart;
     private Button btnClear;
 
-    //Панель для размещения матрицы
-    private Panel pnlMatrix;
 
-    private GridLayout gridLayout;
-
-    public MainFrame(MainController controller) {
+    public MainFrame(MainController controller, Collection<Point> data) {
         this.controller = controller;
+        this.data = data;
 
         initUI();
     }
@@ -44,12 +46,13 @@ public class MainFrame extends Frame implements ActionListener, ModelListener {
 
         setSize(Main.getProperty(Main.MAIN_WIDTH), Main.getProperty(Main.MAIN_HEIGHT));
 
+        setMinimumSize(new Dimension(300, 300));
+
         //Установить размер поля по-умолчанию
         int size = Main.getProperty(Main.FIELD_SIZE);
         fieldSize = new Dimension(size, size);
 
         setResizable(true);
-
 
         //Расположить окно по центру
         setLocationRelativeTo(null);
@@ -64,14 +67,10 @@ public class MainFrame extends Frame implements ActionListener, ModelListener {
             }
         });
 
-        gridLayout = new GridLayout();
+        matrix = new Matrix(fieldSize.width, fieldSize.height, data);
+        matrix.addCellClickListener(this);
 
-        pnlMatrix = new Panel(gridLayout);
-
-        createMatrix();
-
-        add(pnlMatrix, BorderLayout.CENTER);
-
+        add(matrix, BorderLayout.CENTER);
 
         createMenu();
 
@@ -128,37 +127,21 @@ public class MainFrame extends Frame implements ActionListener, ModelListener {
         add(pnlControl, BorderLayout.SOUTH);
     }
 
-    //Создает и настраивает матрицу компонентов с размерностью поля
-    private void createMatrix() {
-
-        gridLayout.setColumns(fieldSize.width);
-        gridLayout.setRows(fieldSize.height);
-
-        gridLayout.setVgap(1);
-        gridLayout.setHgap(1);
-
-        pnlMatrix.removeAll();
-
-    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand()) {
             case "Clear":
                 controller.onClearAction();
-
                 break;
             case "Settings":
                 controller.onSettingsAction(this);
-
                 break;
             case "Start":
                 controller.onStartAction();
-
                 break;
             case "Stop":
                 controller.onStopAction();
-
                 break;
             case "Exit":
                 controller.onStopAction();
@@ -176,18 +159,14 @@ public class MainFrame extends Frame implements ActionListener, ModelListener {
                 break;
             case FIELD_SIZE_CHANGED:
                 fieldSize = event.getSize();
-                createMatrix();
+                matrix.setColumns(fieldSize.width);
+                matrix.setRows(fieldSize.height);
+                matrix.repaint();
                 break;
             case DATA_CHANGED:
-                updateCells();
+                matrix.repaint();
                 break;
         }
-    }
-
-    //Обновляет отображение ячеек в соответствии с данными
-    private void updateCells() {
-
-
     }
 
     private void setButtonsState(IModel.State state) {
@@ -200,5 +179,10 @@ public class MainFrame extends Frame implements ActionListener, ModelListener {
             btnStart.setLabel("Start");
             btnClear.setEnabled(true);
         }
+    }
+
+    @Override
+    public void cellClicked(int column, int row) {
+        controller.onCellClick(new Point(column, row));
     }
 }

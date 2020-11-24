@@ -109,8 +109,6 @@ public class Model implements IModel {
 
             sendEvent(new ModelEvent(dimension));
         }
-
-
     }
 
     @Override
