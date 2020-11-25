@@ -30,11 +30,15 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
     //Поле ввода максимального возраста колонии
     private TextField tfLifeSpan;
 
+    //Минимальный размер поля
     private int minSize;
 
+    //Максимальный размер поля
     private int maxSize;
 
     private Button btnOk;
+
+    private final int resolution;
 
 
     public SettingsDialog(Frame parent, SettingsController controller,
@@ -43,6 +47,8 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
         this.fieldSize = fieldSize;
         this.lifeSpan = lifeSpan;
         this.controller = controller;
+
+        resolution =Toolkit.getDefaultToolkit().getScreenResolution();
 
         initUI();
     }
@@ -54,20 +60,18 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
         //Установить окно по центру экрана
         setLocationRelativeTo(null);
 
-        setSize(Main.getProperty(Main.SETTINGS_WIDTH),
-                Main.getProperty(Main.SETTINGS_HEIGHT));
+        setSize(resolution*3, resolution*2-10);
 
         minSize = Main.getProperty(Main.MIN_SIZE);
         maxSize = Main.getProperty(Main.MAX_SIZE);
 
         setResizable(false);
 
-        setLayout(new FlowLayout(FlowLayout.CENTER, 50, 15));
+        setLayout(new FlowLayout(FlowLayout.CENTER, 15, 10));
 
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                super.windowClosing(e);
                 controller.onCancel();
                 dispose();
             }
@@ -77,17 +81,17 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
         add(createTextFieldPanel());
 
         btnOk = new Button("OK");
-        btnOk.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 20));
-        btnOk.setPreferredSize(new Dimension(150, 35));
+        btnOk.setFont(new Font(Font.SANS_SERIF, Font.PLAIN,resolution/7));
+        btnOk.setPreferredSize(new Dimension(resolution, resolution/4));
         btnOk.addActionListener(this);
         add(btnOk);
 
     }
 
     private Panel createTextFieldPanel() {
-        Panel panel = new Panel(new FlowLayout(FlowLayout.CENTER, 0, 15));
-        Font font = new Font(Font.SANS_SERIF, Font.PLAIN, 24);
-        panel.setPreferredSize(new Dimension(100, 170));
+        Panel panel = new Panel(new FlowLayout(FlowLayout.CENTER, 0, 5));
+        Font font = new Font(Font.SANS_SERIF, Font.PLAIN, resolution/6);
+        panel.setPreferredSize(new Dimension(resolution-30, resolution));
         panel.setFont(font);
 
         tfWidth = new TextField("" + fieldSize.width, TF_COLUMNS);
@@ -107,13 +111,13 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
     }
 
     private Panel createLabelPanel() {
-        Font font = new Font(Font.SANS_SERIF, Font.BOLD, 24);
+        Font font = new Font(Font.SANS_SERIF, Font.BOLD, resolution/6);
 
-        Panel panel = new Panel(new FlowLayout(FlowLayout.CENTER, 0, 20));
-        panel.setPreferredSize(new Dimension(130, 170));
+        Panel panel = new Panel(new FlowLayout(FlowLayout.CENTER, 0, 8));
+        panel.setPreferredSize(new Dimension(resolution, resolution));
         panel.setFont(font);
 
-        Dimension dimension = new Dimension(120, 30);
+        Dimension dimension = new Dimension(resolution, resolution/4);
 
         addComponent(panel, new Label("Width:"), dimension);
         addComponent(panel, new Label("Height:"), dimension);

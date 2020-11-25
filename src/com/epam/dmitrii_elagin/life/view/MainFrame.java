@@ -28,10 +28,16 @@ public class MainFrame extends Frame implements ActionListener, ModelListener, C
     private Button btnStart;
     private Button btnClear;
 
+    private final int resolution;
+
 
     public MainFrame(MainController controller, Collection<Point> data) {
         this.controller = controller;
         this.data = data;
+
+        resolution =Toolkit.getDefaultToolkit().getScreenResolution();
+
+        System.out.println(resolution);
 
         initUI();
     }
@@ -44,9 +50,9 @@ public class MainFrame extends Frame implements ActionListener, ModelListener, C
     private void initUI() {
         setTitle("Life");
 
-        setSize(Main.getProperty(Main.MAIN_WIDTH), Main.getProperty(Main.MAIN_HEIGHT));
+        setSize(resolution*10, resolution*10);
 
-        setMinimumSize(new Dimension(300, 300));
+        setMinimumSize(new Dimension(resolution *5, resolution *5));
 
         //Установить размер поля по-умолчанию
         int size = Main.getProperty(Main.FIELD_SIZE);
@@ -78,7 +84,7 @@ public class MainFrame extends Frame implements ActionListener, ModelListener, C
     }
 
     private void createMenu() {
-        Font font = new Font(Font.SANS_SERIF, Font.PLAIN, 20);
+        Font font = new Font(Font.SANS_SERIF, Font.PLAIN, resolution /7);
 
         MenuBar menuBar = new MenuBar();
         Menu menu = new Menu("Menu");
@@ -102,12 +108,12 @@ public class MainFrame extends Frame implements ActionListener, ModelListener, C
         pnlControl.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 10));
 
         //Создать шрифт для кнопок управления
-        Font font = new Font(Font.SANS_SERIF, Font.PLAIN, 26);
+        Font font = new Font(Font.SANS_SERIF, Font.PLAIN, resolution /5);
 
         pnlControl.setFont(font);
 
         //Создать размерность конопок управления
-        Dimension dimension = new Dimension(150, 50);
+        Dimension dimension = new Dimension(resolution, resolution/4);
 
         btnStart = new Button("Start");
         btnStart.setPreferredSize(dimension);

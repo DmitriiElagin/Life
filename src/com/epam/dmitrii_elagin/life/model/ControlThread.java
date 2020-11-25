@@ -36,7 +36,7 @@ class ControlThread extends Thread {
             model.sendEvent(new ModelEvent(ModelEvent.ModelEventType.DATA_CHANGED));
         }
 
-        ExecutorService service = Executors.newFixedThreadPool(2);
+        ExecutorService service = Executors.newCachedThreadPool();
 
         while (isRunning) {
 
@@ -70,8 +70,7 @@ class ControlThread extends Thread {
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
-        }
-
+         }
         //Переключить состояние приложения
         model.setState(IModel.State.STOPPED);
 
