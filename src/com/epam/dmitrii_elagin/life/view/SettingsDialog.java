@@ -30,6 +30,13 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
     //Поле ввода максимального возраста колонии
     private TextField tfLifeSpan;
 
+    //Поле ввода параметра "тесноты"
+    private TextField tfTightness;
+
+    //Поле ввода параметра "одиночества"
+    private TextField tfLoneliness;
+
+
     //Минимальный размер поля
     private int minSize;
 
@@ -48,7 +55,7 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
         this.lifeSpan = lifeSpan;
         this.controller = controller;
 
-        resolution =Toolkit.getDefaultToolkit().getScreenResolution();
+        resolution = Toolkit.getDefaultToolkit().getScreenResolution();
 
         initUI();
     }
@@ -60,7 +67,7 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
         //Установить окно по центру экрана
         setLocationRelativeTo(null);
 
-        setSize(resolution*3, resolution*2-10);
+        setSize(resolution * 3, resolution * 2 + 50);
 
         minSize = Main.getProperty(Main.MIN_SIZE);
         maxSize = Main.getProperty(Main.MAX_SIZE);
@@ -81,47 +88,61 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
         add(createTextFieldPanel());
 
         btnOk = new Button("OK");
-        btnOk.setFont(new Font(Font.SANS_SERIF, Font.PLAIN,resolution/7));
-        btnOk.setPreferredSize(new Dimension(resolution, resolution/4));
+        btnOk.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, resolution / 7));
+        btnOk.setPreferredSize(new Dimension(resolution, resolution / 4));
         btnOk.addActionListener(this);
         add(btnOk);
 
     }
 
     private Panel createTextFieldPanel() {
-        Panel panel = new Panel(new FlowLayout(FlowLayout.CENTER, 0, 5));
-        Font font = new Font(Font.SANS_SERIF, Font.PLAIN, resolution/6);
-        panel.setPreferredSize(new Dimension(resolution-30, resolution));
+        Panel panel = new Panel(new FlowLayout(FlowLayout.CENTER, 0, 8));
+        Font font = new Font(Font.SANS_SERIF, Font.PLAIN, resolution / 6);
+        panel.setPreferredSize(new Dimension(resolution - 30, resolution + 100));
         panel.setFont(font);
 
         tfWidth = new TextField("" + fieldSize.width, TF_COLUMNS);
         tfWidth.addTextListener(this);
         tfWidth.addKeyListener(this);
         addComponent(panel, tfWidth, null);
+
         tfHeight = new TextField("" + fieldSize.height, TF_COLUMNS);
         tfHeight.addKeyListener(this);
         tfHeight.addTextListener(this);
         addComponent(panel, tfHeight, null);
+
         tfLifeSpan = new TextField("" + lifeSpan, TF_COLUMNS);
         tfLifeSpan.addKeyListener(this);
         tfLifeSpan.addTextListener(this);
         addComponent(panel, tfLifeSpan, null);
 
+        tfTightness = new TextField("" + 4, TF_COLUMNS);
+        tfTightness.addKeyListener(this);
+        tfTightness.addTextListener(this);
+        addComponent(panel, tfTightness, null);
+
+        tfLoneliness = new TextField("" + 2, TF_COLUMNS);
+        tfLoneliness.addKeyListener(this);
+        tfLoneliness.addTextListener(this);
+        addComponent(panel, tfLoneliness, null);
+
         return panel;
     }
 
     private Panel createLabelPanel() {
-        Font font = new Font(Font.SANS_SERIF, Font.BOLD, resolution/6);
+        Font font = new Font(Font.SANS_SERIF, Font.BOLD, resolution / 6);
 
         Panel panel = new Panel(new FlowLayout(FlowLayout.CENTER, 0, 8));
-        panel.setPreferredSize(new Dimension(resolution, resolution));
+        panel.setPreferredSize(new Dimension(resolution, resolution + 100));
         panel.setFont(font);
 
-        Dimension dimension = new Dimension(resolution, resolution/4);
+        Dimension dimension = new Dimension(resolution, resolution / 4);
 
         addComponent(panel, new Label("Width:"), dimension);
         addComponent(panel, new Label("Height:"), dimension);
         addComponent(panel, new Label("Life Span:"), dimension);
+        addComponent(panel, new Label("Tightness:"), dimension);
+        addComponent(panel, new Label("Loneliness:"), dimension);
 
         return panel;
 
@@ -144,19 +165,14 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
 
     @Override
     public void textValueChanged(TextEvent e) {
-        boolean enabled;
 
-        //Запретить кнопку, если значения полей выходят за пределы разрешенных или отсутствуют
-        try {
-            int w = Integer.parseInt(tfWidth.getText());
-            int h = Integer.parseInt(tfHeight.getText());
+        //Блокировать кнопку, если есть пустые поля
+        boolean enabled = !(tfWidth.getText().isEmpty() ||
+                tfHeight.getText().isEmpty() ||
+                tfLifeSpan.getText().isEmpty() ||
+                tfTightness.getText().isEmpty() ||
+                tfLoneliness.getText().isEmpty());
 
-            enabled = !(w < minSize || h < minSize) &&
-                    !(w > maxSize || h > maxSize) &&
-                    !tfLifeSpan.getText().isEmpty();
-        } catch (NumberFormatException ex) {
-            enabled = false;
-        }
         btnOk.setEnabled(enabled);
     }
 
@@ -168,6 +184,11 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
         if (!Character.isDigit(c)) {
             e.setKeyChar('\0');
         }
+
+
+
+
+
 
     }
 
