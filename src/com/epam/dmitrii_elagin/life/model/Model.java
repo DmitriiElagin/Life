@@ -10,9 +10,11 @@ import java.util.List;
 
 public class Model implements IModel {
 
-    public static final int LONELINESS = 2;
+    //Параметр одиночества бактерий
+    private int loneliness;
 
-    public static final int TIGHTNESS = 4;
+    //Параметр тесноты бактерий
+    private int tightness;
 
     //Размер поля
     private Dimension fieldSize;
@@ -39,10 +41,30 @@ public class Model implements IModel {
         int size = Main.getProperty(Main.FIELD_SIZE);
         fieldSize = new Dimension(size, size);
 
-        //Установить продолжительность жизни колонии по-умолчинию
+        //Установить параметры симуляции по-умолчанию
         setLifeSpan(Main.getProperty(Main.LIFE_SPAN));
+        setTightness(Main.getProperty(Main.TIGHTNESS));
+        setLoneliness(Main.getProperty(Main.LONELINESS));
 
+    }
 
+    @Override
+    public int getLoneliness() {
+        return loneliness;
+    }
+
+    @Override
+    public void setLoneliness(int loneliness) {
+        this.loneliness = loneliness;
+    }
+
+    @Override
+    public int getTightness() {
+        return tightness;
+    }
+
+    public void setTightness(int tightness) {
+        this.tightness = tightness;
     }
 
     State getState() {

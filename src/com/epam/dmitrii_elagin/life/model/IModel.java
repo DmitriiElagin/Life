@@ -23,6 +23,14 @@ public interface IModel {
 
     int getLifeSpan();
 
+    void setLoneliness(int loneliness);
+
+    int  getLoneliness();
+
+    void setTightness(int tightness);
+
+    int getTightness();
+
     void runSimulation();
 
     void stopSimulation();

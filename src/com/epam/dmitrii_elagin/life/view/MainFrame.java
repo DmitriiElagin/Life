@@ -37,8 +37,6 @@ public class MainFrame extends Frame implements ActionListener, ModelListener, C
 
         resolution =Toolkit.getDefaultToolkit().getScreenResolution();
 
-        System.out.println(resolution);
-
         initUI();
     }
 

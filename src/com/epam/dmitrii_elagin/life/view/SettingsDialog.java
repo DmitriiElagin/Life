@@ -21,6 +21,10 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
     //Продолжительность жизни колонии
     private int lifeSpan;
 
+    private int tightness;
+
+    private int loneliness;
+
     //Поле ввода ширины игрового поля
     private TextField tfWidth;
 
@@ -36,12 +40,7 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
     //Поле ввода параметра "одиночества"
     private TextField tfLoneliness;
 
-
-    //Минимальный размер поля
-    private int minSize;
-
-    //Максимальный размер поля
-    private int maxSize;
+    private Label lblError;
 
     private Button btnOk;
 
@@ -49,11 +48,14 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
 
 
     public SettingsDialog(Frame parent, SettingsController controller,
-                          Dimension fieldSize, int lifeSpan) {
+                          Dimension fieldSize, int lifeSpan,
+                          int tightness, int loneliness) {
         super(parent, true);
         this.fieldSize = fieldSize;
         this.lifeSpan = lifeSpan;
         this.controller = controller;
+        this.tightness=tightness;
+        this.loneliness = loneliness;
 
         resolution = Toolkit.getDefaultToolkit().getScreenResolution();
 
@@ -67,28 +69,30 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
         //Установить окно по центру экрана
         setLocationRelativeTo(null);
 
-        setSize(resolution * 3, resolution * 2 + 50);
-
-        minSize = Main.getProperty(Main.MIN_SIZE);
-        maxSize = Main.getProperty(Main.MAX_SIZE);
+        setSize(resolution * 2, resolution * 2+100);
 
         setResizable(false);
+        setFont(new Font(Font.SANS_SERIF, Font.PLAIN, resolution / 9));
 
-        setLayout(new FlowLayout(FlowLayout.CENTER, 15, 10));
+        setLayout(new FlowLayout(FlowLayout.CENTER, 10, 15));
 
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                controller.onCancel();
-                dispose();
+                controller.onCancelAction(SettingsDialog.this);
+
             }
         });
 
         add(createLabelPanel());
         add(createTextFieldPanel());
 
+        lblError=new Label();
+        lblError.setPreferredSize(new Dimension(getWidth()-20, resolution/6));
+        lblError.setForeground(Color.red);
+        add(lblError);
+
         btnOk = new Button("OK");
-        btnOk.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, resolution / 7));
         btnOk.setPreferredSize(new Dimension(resolution, resolution / 4));
         btnOk.addActionListener(this);
         add(btnOk);
@@ -102,31 +106,30 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
         panel.setFont(font);
 
         tfWidth = new TextField("" + fieldSize.width, TF_COLUMNS);
-        tfWidth.addTextListener(this);
-        tfWidth.addKeyListener(this);
         addComponent(panel, tfWidth, null);
 
         tfHeight = new TextField("" + fieldSize.height, TF_COLUMNS);
-        tfHeight.addKeyListener(this);
-        tfHeight.addTextListener(this);
         addComponent(panel, tfHeight, null);
 
         tfLifeSpan = new TextField("" + lifeSpan, TF_COLUMNS);
-        tfLifeSpan.addKeyListener(this);
-        tfLifeSpan.addTextListener(this);
         addComponent(panel, tfLifeSpan, null);
 
-        tfTightness = new TextField("" + 4, TF_COLUMNS);
-        tfTightness.addKeyListener(this);
-        tfTightness.addTextListener(this);
+        tfTightness = new TextField("" + tightness, TF_COLUMNS);
         addComponent(panel, tfTightness, null);
 
-        tfLoneliness = new TextField("" + 2, TF_COLUMNS);
-        tfLoneliness.addKeyListener(this);
-        tfLoneliness.addTextListener(this);
+        tfLoneliness = new TextField("" + loneliness, TF_COLUMNS);
         addComponent(panel, tfLoneliness, null);
 
+        for(Component component:panel.getComponents()) {
+            component.addKeyListener(this);
+            ((TextField)component).addTextListener(this);
+        }
+
         return panel;
+    }
+
+    public void showError(String message) {
+        lblError.setText(message);
     }
 
     private Panel createLabelPanel() {
@@ -158,13 +161,19 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
     public void actionPerformed(ActionEvent e) {
         fieldSize.height = Integer.parseInt(tfHeight.getText());
         fieldSize.width = Integer.parseInt(tfWidth.getText());
+
         lifeSpan = Integer.parseInt(tfLifeSpan.getText());
-        controller.onOkAction(fieldSize, lifeSpan);
-        dispose();
+
+        tightness = Integer.parseInt(tfTightness.getText());
+        loneliness = Integer.parseInt(tfLoneliness.getText());
+
+        controller.onOkAction(fieldSize, lifeSpan, tightness, loneliness, this);
     }
 
     @Override
     public void textValueChanged(TextEvent e) {
+
+        lblError.setText("");
 
         //Блокировать кнопку, если есть пустые поля
         boolean enabled = !(tfWidth.getText().isEmpty() ||
@@ -184,12 +193,6 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
         if (!Character.isDigit(c)) {
             e.setKeyChar('\0');
         }
-
-
-
-
-
-
     }
 
     @Override

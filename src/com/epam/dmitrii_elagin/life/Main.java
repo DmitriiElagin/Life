@@ -21,6 +21,8 @@ public class Main {
     public static final String MAX_SIZE = "field.max_size";
     public static final String FIELD_SIZE = "field.size";
     public static final String LIFE_SPAN = "field.life_span";
+    public static final String TIGHTNESS = "tightness";
+    public static final String LONELINESS = "loneliness";
 
 
     public static void main(String[] args) {
@@ -35,7 +37,8 @@ public class Main {
 
         SettingsDialog settingsFrame =
                 new SettingsDialog(frame, new SettingsController(model),
-                        new Dimension(size, size), getProperty(LIFE_SPAN));
+                        new Dimension(size, size), getProperty(LIFE_SPAN),
+                        getProperty(Main.TIGHTNESS), getProperty(Main.LONELINESS));
 
         settingsFrame.setVisible(true);
 

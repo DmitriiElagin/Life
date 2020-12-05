@@ -1,7 +1,9 @@
 package com.epam.dmitrii_elagin.life.controller;
 
 
+import com.epam.dmitrii_elagin.life.Main;
 import com.epam.dmitrii_elagin.life.model.IModel;
+import com.epam.dmitrii_elagin.life.view.SettingsDialog;
 
 import java.awt.*;
 
@@ -14,12 +16,22 @@ public class SettingsController {
         this.model = model;
     }
 
-    public void onCancel() {
-
+    public void onCancelAction(SettingsDialog dialog) {
+        dialog.dispose();
     }
 
-    public void onOkAction(Dimension size, int lifeSpan) {
-        model.setLifeSpan(lifeSpan);
-        model.setFieldSize(size);
+    public void onOkAction(Dimension size, int lifeSpan, int tightness, int loneliness, SettingsDialog dialog) {
+        int minSize = Main.getProperty(Main.MIN_SIZE);
+
+        if(size.width<minSize || size.height<minSize) {
+            dialog.showError("Height and width cannot be less than "+minSize);
+        }
+        else {
+            model.setFieldSize(size);
+            model.setLifeSpan(lifeSpan);
+            model.setTightness(tightness);
+            model.setLoneliness(loneliness);
+            dialog.dispose();
+        }
     }
 }
