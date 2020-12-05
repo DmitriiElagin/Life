@@ -31,7 +31,7 @@ public class Creator implements Callable<List<Point>> {
                     //Посчитать колл-во соседних занятых клеток
                     int n = model.countNeighbors(point);
 
-                    if (n > Model.LONELINESS && n < Model.TIGHTNESS) {
+                    if (n > model.getLoneliness() && n < model.getTightness()) {
                         result.add(point);
                     }
                 }

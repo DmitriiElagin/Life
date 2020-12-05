@@ -129,13 +129,11 @@ public class Matrix extends DoubleBuffer {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-
             int column = (e.getX() - xOffset) / cellWidth;
             int row = (e.getY() - yOffset) / cellHeight;
 
             notifyCellClickListeners(column, row);
 
-            System.out.println(column + " " + row);
         }
     }
 

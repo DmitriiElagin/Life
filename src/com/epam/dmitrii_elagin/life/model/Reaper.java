@@ -25,7 +25,7 @@ public class Reaper implements Callable<List<Point>> {
         for (Point point : colony) {
             int n = model.countNeighbors(point);
 
-            if (n < Model.LONELINESS || n > Model.TIGHTNESS) {
+            if (n < model.getLoneliness() || n > model.getTightness()) {
                 result.add(point);
             }
         }

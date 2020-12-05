@@ -30,7 +30,8 @@ public class MainController {
         SettingsDialog dialog =
                 new SettingsDialog(parent, settingsController,
                         new Dimension(fieldSize.width, fieldSize.height),
-                        model.getLifeSpan());
+                        model.getLifeSpan(), model.getTightness(),
+                        model.getLoneliness());
 
         dialog.setVisible(true);
 
