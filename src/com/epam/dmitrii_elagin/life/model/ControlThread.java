@@ -1,22 +1,16 @@
 package com.epam.dmitrii_elagin.life.model;
 
 import java.awt.*;
-import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.*;
 
 //Поток, управляющий процессом моделирования
 class ControlThread extends Thread {
 
-    private final Collection<Point> colony;
-
     private final Model model;
 
     ControlThread(Model model) {
-
         this.model = model;
-
-        this.colony = model.getColony();
     }
 
     @Override
@@ -57,7 +51,7 @@ class ControlThread extends Thread {
                 model.sendEvent(new ModelEvent(ModelEvent.ModelEventType.DATA_CHANGED));
 
                 //Пауза для наглядности симулуяции
-                TimeUnit.MILLISECONDS.sleep(50);
+                TimeUnit.MILLISECONDS.sleep(20);
 
                 //Увеличить возраст колонии
                 age++;
@@ -65,7 +59,7 @@ class ControlThread extends Thread {
                 //условие выполнения цикла
                 isRunning = (age <= model.getLifeSpan()) &&
                         (model.getState() == IModel.State.RUNNING) &&
-                        (!colony.isEmpty());
+                        (!model.getColony().isEmpty());
 
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();

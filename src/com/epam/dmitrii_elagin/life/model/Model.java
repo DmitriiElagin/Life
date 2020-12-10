@@ -33,7 +33,7 @@ public class Model implements IModel {
     public Model() {
         listeners = new LinkedList<>();
 
-        colony = Collections.synchronizedCollection(new HashSet<>());
+        colony = Collections.synchronizedCollection(new LinkedHashSet<>());
 
         state = State.STOPPED;
 
