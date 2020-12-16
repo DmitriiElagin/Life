@@ -12,38 +12,15 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 @RunWith(Parameterized.class)
-public class CreatorTest {
+public class ReaperTest {
 
     @Parameterized.Parameter()
-    public List<Point> points;
+    public java.util.List<Point> points;
 
     @Parameterized.Parameter(1)
     public List<Point> expected;
 
-    private Creator creator;
-
-
-    @Parameterized.Parameters
-    public static Collection<Object[]> getData() {
-        List<Object[]> data = new LinkedList<>();
-        data.add(new Object[]
-                {Arrays.asList(new Point(0, 0),
-                        new Point(1, 0), new Point(2, 0)),
-                        Collections.singletonList(new Point(1, 1))});
-
-        data.add(new Object[]
-                {Arrays.asList(new Point(1, 0), new Point(0, 1),
-                        new Point(1, 1), new Point(2, 1),
-                        new Point(1, 2)),
-                        Arrays.asList(new Point(0, 0), new Point(2, 0),
-                                new Point(0, 2), new Point(2, 2))});
-
-        data.add(new Object[]
-                {Collections.singletonList(new Point(0, 0)),
-                        Collections.EMPTY_LIST});
-
-        return data;
-    }
+    private Reaper reaper;
 
     @Before
     public void setUp() {
@@ -54,11 +31,32 @@ public class CreatorTest {
 
         model.getColony().addAll(points);
 
-        creator = new Creator(model);
+        reaper = new Reaper(model);
+
+    }
+
+    @Parameterized.Parameters
+    public static Collection<Object[]> getData() {
+        List<Object[]> data = new LinkedList<>();
+        data.add(new Object[]
+                {Arrays.asList(new Point(0, 0),
+                        new Point(1, 0), new Point(2, 0)),
+                        Arrays.asList(new Point(0, 0), new Point(2, 0))});
+
+        data.add(new Object[]
+                {Arrays.asList(new Point(0, 0), new Point(1, 0), new Point(2, 0),
+                        new Point(0, 1), new Point(1, 1), new Point(2, 1)),
+                        Arrays.asList(new Point(1, 0), new Point(1, 1))});
+
+        data.add(new Object[]
+                {Arrays.asList(new Point(0, 0), new Point(0, 1), new Point(1, 1)),
+                        Collections.EMPTY_LIST});
+
+        return data;
     }
 
     @Test
     public void testCall() {
-        assertEquals(expected, creator.call());
+        assertEquals(expected, reaper.call());
     }
 }
