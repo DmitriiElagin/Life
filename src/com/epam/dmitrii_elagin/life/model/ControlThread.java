@@ -51,13 +51,13 @@ class ControlThread extends Thread {
                 model.sendEvent(new ModelEvent(ModelEvent.ModelEventType.DATA_CHANGED));
 
                 //Пауза для наглядности симулуяции
-                TimeUnit.MILLISECONDS.sleep(20);
+                TimeUnit.MILLISECONDS.sleep(50);
 
                 //Увеличить возраст колонии
                 age++;
 
                 //условие выполнения цикла
-                isRunning = (age <= model.getLifeSpan()) &&
+                isRunning = (age < model.getLifeSpan()) &&
                         (model.getState() == IModel.State.RUNNING) &&
                         (!model.getColony().isEmpty());
 
