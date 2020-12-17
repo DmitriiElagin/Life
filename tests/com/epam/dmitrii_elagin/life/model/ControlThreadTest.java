@@ -1,21 +1,16 @@
 package com.epam.dmitrii_elagin.life.model;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
 
-import static org.junit.Assert.*;
+import java.awt.*;
+
 import static org.mockito.Mockito.*;
 
 public class ControlThreadTest {
 
     private Model spyModel;
     private ControlThread controlThread;
-
-
 
     @Before
     public void setUp() {
@@ -50,14 +45,20 @@ public class ControlThreadTest {
     }
 
     @Test
-    public void testRunShouldUseLifeSpanCorrectly() {
+    public void testRunShouldCallGetLifeSpanFiveTimes() {
         controlThread.run();
 
         verify(spyModel, times(5)).getLifeSpan();
     }
 
+    @Test
+    public void testRunShouldStopSimulationWhenColonyIsEmpty() {
+        spyModel.getColony().add(new Point(0, 0));
 
+        controlThread.run();
 
+        verify(spyModel, times(1)).getLifeSpan();
+    }
 
 
 }
