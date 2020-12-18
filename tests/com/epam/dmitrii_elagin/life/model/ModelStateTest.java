@@ -25,14 +25,14 @@ public class ModelStateTest {
     }
 
     @Test
-    public void colonyShouldBeNotNull(){
+    public void testColonyShouldBeNotNull(){
         Model model = new Model();
 
         assertNotNull(model.getColony());
     }
 
     @Test
-    public void widthAndHeightMustBeGreaterThanOne() {
+    public void testWidthAndHeightMustBeGreaterThanOne() {
 
 
         Dimension size = model.getFieldSize();
@@ -43,7 +43,7 @@ public class ModelStateTest {
     }
 
     @Test
-    public void initialStateShouldBeStopped() {
+    public void testInitialStateShouldBeStopped() {
         assertSame(model.getState(), IModel.State.STOPPED);
 
     }
@@ -83,10 +83,21 @@ public class ModelStateTest {
     }
 
     @Test
-    public void clearFieldShouldClearColony(){
+    public void testClearFieldShouldClearColony(){
         model.clearField();
 
         assertTrue(model.getColony().isEmpty());
+    }
+
+    @Test
+    public void testStopSimulation(){
+        model.setState(IModel.State.RUNNING);
+
+        model.stopSimulation();
+
+        assertEquals(IModel.State.STOPPED, model.getState());
+
+
     }
 
 
