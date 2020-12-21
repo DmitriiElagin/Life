@@ -21,7 +21,7 @@ public class ControlThreadTest {
     }
 
     @Test
-    public void testRunShouldCallRandomlyFill() {
+    public void testRunShouldInvokeRandomlyFill() {
         controlThread.run();
 
         verify(spyModel).randomlyFill();
@@ -45,7 +45,7 @@ public class ControlThreadTest {
     }
 
     @Test
-    public void testRunShouldCallGetLifeSpanFiveTimes() {
+    public void testRunShouldInvokeGetLifeSpanFiveTimes() {
         controlThread.run();
 
         verify(spyModel, times(5)).getLifeSpan();
