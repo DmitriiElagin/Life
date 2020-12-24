@@ -20,7 +20,7 @@ public class MainFrameTest {
     @Mock
     private MainController controller;
 
-    private MainFrame mainFrame;
+    private MainFrame spyFrame;
 
     @Mock
     private ActionEvent event;
@@ -30,15 +30,16 @@ public class MainFrameTest {
 
     @Before
     public void setUp() {
-        Model model =new Model();
-        mainFrame = spy(new MainFrame(controller, model.getColony()));
+        Model model = new Model();
+        spyFrame = spy(new MainFrame(controller, model.getColony()));
+	
     }
 
     @Test
     public void testClearActionPerformed() {
         when(event.getActionCommand()).thenReturn("Clear");
 
-        mainFrame.actionPerformed(event);
+        spyFrame.actionPerformed(event);
 
         verify(controller).onClearAction();
     }
@@ -47,7 +48,7 @@ public class MainFrameTest {
     public void testSettingsActionPerformed() {
         when(event.getActionCommand()).thenReturn("Settings");
 
-        mainFrame.actionPerformed(event);
+        spyFrame.actionPerformed(event);
 
         verify(controller).onSettingsAction(anyObject());
 
@@ -57,7 +58,7 @@ public class MainFrameTest {
     public void testStartActionPerformed() {
         when(event.getActionCommand()).thenReturn("Start");
 
-        mainFrame.actionPerformed(event);
+        spyFrame.actionPerformed(event);
 
         verify(controller).onStartAction();
     }
@@ -66,7 +67,7 @@ public class MainFrameTest {
     public void testStopActionPerformed() {
         when(event.getActionCommand()).thenReturn("Stop");
 
-        mainFrame.actionPerformed(event);
+        spyFrame.actionPerformed(event);
 
         verify(controller).onStopAction();
 
@@ -76,10 +77,10 @@ public class MainFrameTest {
     public void testExitActionPerformed() {
         when(event.getActionCommand()).thenReturn("Exit");
 
-        mainFrame.actionPerformed(event);
+        spyFrame.actionPerformed(event);
 
         verify(controller).onStopAction();
-        verify(mainFrame).dispose();
+        verify(spyFrame).dispose();
 
     }
 
@@ -89,7 +90,7 @@ public class MainFrameTest {
     public void cellClicked() {
         int w = 7, h = 13;
 
-        mainFrame.cellClicked(w,h);
+        spyFrame.cellClicked(w,h);
 
         verify(controller).onCellClick(new Point(w,h));
 
