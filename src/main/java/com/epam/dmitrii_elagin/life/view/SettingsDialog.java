@@ -68,12 +68,12 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
         //Установить окно по центру экрана
         setLocationRelativeTo(null);
 
-        setSize(resolution * 2, resolution * 2+100);
+        setSize(resolution * 2+15, resolution * 2+100);
 
         setResizable(false);
         setFont(new Font(Font.SANS_SERIF, Font.PLAIN, resolution / 9));
 
-        setLayout(new FlowLayout(FlowLayout.CENTER, 10, 15));
+        setLayout(new FlowLayout(FlowLayout.CENTER, 10, 8));
 
         addWindowListener(new WindowAdapter() {
             @Override
