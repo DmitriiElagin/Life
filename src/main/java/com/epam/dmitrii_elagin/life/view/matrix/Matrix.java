@@ -71,8 +71,8 @@ public class Matrix extends DoubleBuffer {
 
     private void loadImagesFromResources() {
         try {
-            icon= ImageIO.read(getClass().getResourceAsStream("/resources/images/bacteria.png"));
-            background=ImageIO.read(getClass().getResourceAsStream("/resources/images/red_background.jpg"));
+            icon= ImageIO.read(getClass().getResourceAsStream("/images/bacteria.png"));
+            background=ImageIO.read(getClass().getResourceAsStream("/images/red_background.jpg"));
         } catch (IOException e) {
             System.err.println("IOException: "+e.getMessage());
         }

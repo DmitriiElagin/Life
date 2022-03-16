@@ -21,7 +21,7 @@ public class MainFrame extends Frame implements ActionListener, ModelListener, C
     private Dimension fieldSize;
 
     //Данные из модели
-    private Collection<Point> data;
+    private final Collection<Point> data;
 
     private Matrix matrix;
 
@@ -40,9 +40,6 @@ public class MainFrame extends Frame implements ActionListener, ModelListener, C
         initUI();
     }
 
-    public void setData(Collection<Point> data) {
-        this.data = data;
-    }
 
     //Создание и инициализация компонентов интерфейса
     private void initUI() {
