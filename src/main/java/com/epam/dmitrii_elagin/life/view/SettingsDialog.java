@@ -43,9 +43,6 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
 
     private Button btnOk;
 
-    private final int resolution;
-
-
     public SettingsDialog(Frame parent, SettingsController controller,
                           Dimension fieldSize, int lifeSpan,
                           int tightness, int loneliness) {
@@ -56,105 +53,133 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
         this.tightness=tightness;
         this.loneliness = loneliness;
 
-        resolution = Toolkit.getDefaultToolkit().getScreenResolution();
-
         initUI();
     }
 
     //Инициализация и настройка компонентов интерфейса
     private void initUI() {
-        setTitle("Settings");
+        GridBagLayout layout = new GridBagLayout();
+        setTitle("Настройки");
 
         //Установить окно по центру экрана
         setLocationRelativeTo(null);
 
-        setSize(resolution * 2+15, resolution * 2+100);
+        setSize(200, 320);
 
         setResizable(false);
-        setFont(new Font(Font.SANS_SERIF, Font.PLAIN, resolution / 9));
 
-        setLayout(new FlowLayout(FlowLayout.CENTER, 10, 8));
+        setLayout(layout);
 
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 controller.onCancelAction(SettingsDialog.this);
-
             }
         });
 
-        add(createLabelPanel());
-        add(createTextFieldPanel());
-
-        lblError=new Label();
-        lblError.setPreferredSize(new Dimension(getWidth()-20, resolution/6));
-        lblError.setForeground(Color.red);
-        add(lblError);
-
-        btnOk = new Button("OK");
-        btnOk.setPreferredSize(new Dimension(resolution, resolution / 4));
-        btnOk.addActionListener(this);
-        add(btnOk);
-
+        createLabels();
+        createTextFieldS();
+        createErrorLabel();
+        createOKButton();
     }
 
-    private Panel createTextFieldPanel() {
-        Panel panel = new Panel(new FlowLayout(FlowLayout.CENTER, 0, 8));
-        Font font = new Font(Font.SANS_SERIF, Font.PLAIN, resolution / 6);
-        panel.setPreferredSize(new Dimension(resolution - 30, resolution + 100));
-        panel.setFont(font);
+    private void createOKButton() {
+        final GridBagConstraints constraints = new GridBagConstraints();
+        constraints.gridwidth = 2;
+        constraints.gridy = 6;
+        constraints.ipady = 5;
+        constraints.ipadx = 100;
+        constraints.weighty = 0.8;
 
+
+        btnOk = new Button("OK");
+
+        btnOk.setFont(new Font(Font.DIALOG, Font.BOLD, 14));
+        btnOk.addActionListener(this);
+        add(btnOk, constraints);
+    }
+
+    private void createErrorLabel() {
+        final GridBagConstraints constraints = new GridBagConstraints();
+
+        constraints.gridx = 0;
+        constraints.gridy = 5;
+        constraints.gridwidth = 2;
+        constraints.ipady = 20;
+        constraints.ipadx = 100;
+
+        lblError = new Label("Ошибка");
+        //lblError.setPreferredSize(new Dimension(getWidth()-20, resolution/6));
+        lblError.setForeground(Color.red);
+        add(lblError, constraints);
+    }
+
+
+    private void createTextFieldS() {
+        final Font font = new Font(Font.SANS_SERIF, Font.PLAIN, 14);
+
+        final GridBagConstraints constraints = new GridBagConstraints();
+
+        final TextField[] fields = new TextField[5];
+
+        constraints.gridx = 1;
+        constraints.weighty = 0.2;
         tfWidth = new TextField("" + fieldSize.width, TF_COLUMNS);
-        addComponent(panel, tfWidth, null);
+        fields[0] = tfWidth;
+
 
         tfHeight = new TextField("" + fieldSize.height, TF_COLUMNS);
-        addComponent(panel, tfHeight, null);
+        fields[1] = tfHeight;
 
         tfLifeSpan = new TextField("" + lifeSpan, TF_COLUMNS);
-        addComponent(panel, tfLifeSpan, null);
+        fields[2] = tfLifeSpan;
 
         tfTightness = new TextField("" + tightness, TF_COLUMNS);
-        addComponent(panel, tfTightness, null);
+        fields[3] = tfTightness;
 
         tfLoneliness = new TextField("" + loneliness, TF_COLUMNS);
-        addComponent(panel, tfLoneliness, null);
+        fields[4] = tfLoneliness;
 
-        for(Component component:panel.getComponents()) {
-            component.addKeyListener(this);
-            ((TextField)component).addTextListener(this);
+        for (int y = 0; y < 5; y++) {
+            constraints.gridy = y;
+            fields[y].addKeyListener(this);
+            fields[y].addTextListener(this);
+            fields[y].setEditable(true);
+            addComponent(fields[y], constraints, font);
         }
-
-        return panel;
     }
 
     public void showError(String message) {
         lblError.setText(message);
     }
 
-    private Panel createLabelPanel() {
-        Font font = new Font(Font.SANS_SERIF, Font.BOLD, resolution / 6);
+    private void addComponent(Component component, GridBagConstraints constraints, Font font) {
+        component.setFont(font);
+        add(component, constraints);
+    }
 
-        Panel panel = new Panel(new FlowLayout(FlowLayout.CENTER, 0, 8));
-        panel.setPreferredSize(new Dimension(resolution, resolution + 100));
-        panel.setFont(font);
+    private void createLabels() {
+        GridBagConstraints constraints = new GridBagConstraints();
+        Font font = new Font(Font.DIALOG, Font.BOLD, 16);
 
-        Dimension dimension = new Dimension(resolution, resolution / 4);
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        addComponent(new Label("Ширина:"), constraints, font);
 
-        addComponent(panel, new Label("Width:"), dimension);
-        addComponent(panel, new Label("Height:"), dimension);
-        addComponent(panel, new Label("Life Span:"), dimension);
-        addComponent(panel, new Label("Tightness:"), dimension);
-        addComponent(panel, new Label("Loneliness:"), dimension);
+        constraints.gridy = 1;
+        addComponent(new Label("Высота:"), constraints, font);
 
-        return panel;
+        constraints.gridy = 2;
+        addComponent(new Label("Срок жизни:"), constraints, font);
 
+        constraints.gridy = 3;
+        addComponent(new Label("Теснота:"), constraints, font);
+
+        constraints.gridy = 4;
+        addComponent(new Label("Одиночество:"), constraints, font);
     }
 
 
-    private void addComponent(Container container, Component comp, Dimension dimen) {
-        comp.setPreferredSize(dimen);
-        container.add(comp);
-    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -189,7 +214,7 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
         char c = e.getKeyChar();
 
         //Вводить только цифры
-        if (!Character.isDigit(c)) {
+        if (c != KeyEvent.VK_BACK_SPACE && !Character.isDigit(c)) {
             e.setKeyChar('\0');
         }
     }

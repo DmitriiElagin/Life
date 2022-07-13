@@ -24,7 +24,7 @@ public class SettingsController {
         int minSize = Main.getProperty(Main.MIN_SIZE);
 
         if(size.width<minSize || size.height<minSize) {
-            dialog.showError("Height and width cannot be less than "+minSize);
+            dialog.showError("Высота или ширина < " + minSize);
         }
         else {
             model.setFieldSize(size);
