@@ -1,14 +1,18 @@
-package com.epam.dmitrii_elagin.life.model;
+package com.epam.dmitrii_elagin.life.simulator;
 
 import com.epam.dmitrii_elagin.life.Main;
-import com.epam.dmitrii_elagin.life.view.ModelListener;
+import com.epam.dmitrii_elagin.life.view.SimulatorListener;
 
 import java.awt.*;
+import java.util.Queue;
 import java.util.*;
-import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
+public class Simulator {
 
-public class Model implements IModel {
+    public enum State {
+        RUNNING, STOPPED
+    }
 
     //Параметр одиночества бактерий
     private int loneliness;
@@ -25,15 +29,15 @@ public class Model implements IModel {
     //Состояние приложения. Выполняется симуляция или нет.
     private State state;
 
-    //Коллекция координат занятых клеток
-    private final Collection<Point> colony;
+    //Карта координат занятых клеток
+    private final Set<Point> colony;
 
-    private final List<ModelListener> listeners;
+    private final Queue<SimulatorListener> listeners;
 
-    public Model() {
+    public Simulator() {
         listeners = new LinkedList<>();
 
-        colony = Collections.synchronizedCollection(new LinkedHashSet<>());
+        colony = ConcurrentHashMap.newKeySet();
 
         state = State.STOPPED;
 
@@ -45,23 +49,30 @@ public class Model implements IModel {
         setLifeSpan(Main.getProperty(Main.LIFE_SPAN));
         setTightness(Main.getProperty(Main.TIGHTNESS));
         setLoneliness(Main.getProperty(Main.LONELINESS));
-
     }
 
-    @Override
+    Set<Point> getColony() {
+        return colony;
+    }
+
+    public Collection<Point> getBacteriaCollection() {
+        return Collections.unmodifiableSet(colony);
+    }
+
     public int getLoneliness() {
         return loneliness;
     }
 
-    @Override
+
     public void setLoneliness(int loneliness) {
         this.loneliness = loneliness;
     }
 
-    @Override
+
     public int getTightness() {
         return tightness;
     }
+
 
     public void setTightness(int tightness) {
         this.tightness = tightness;
@@ -73,11 +84,11 @@ public class Model implements IModel {
 
     public void setState(State state) {
         this.state = state;
-        sendEvent(new ModelEvent(state));
+        sendEvent(new SimulatorEvent(state));
     }
 
     //Заполнить поле произвольно
-    void randomlyFill() {
+    public void randomlyFill() {
         Random random = new Random(System.currentTimeMillis());
         for (int y = 0; y < fieldSize.height; y++) {
             for (int x = 0; x < fieldSize.width; x++) {
@@ -112,16 +123,13 @@ public class Model implements IModel {
     }
 
     //Добаляет Point, если ее нет в наборе, иначе удаляет ее
-    @Override
     public void switchCell(Point p) {
         if (!colony.add(p)) {
             colony.remove(p);
         }
-        sendEvent(new ModelEvent(ModelEvent.ModelEventType.DATA_CHANGED));
-
+        sendEvent(new SimulatorEvent(SimulatorEvent.SimulatorEventType.DATA_CHANGED));
     }
 
-    @Override
     public void setFieldSize(Dimension dimension) {
 
         if (!dimension.equals(fieldSize)) {
@@ -129,60 +137,54 @@ public class Model implements IModel {
 
             colony.clear();
 
-            sendEvent(new ModelEvent(dimension));
+            sendEvent(new SimulatorEvent(dimension));
         }
     }
 
-    @Override
-    public Collection<Point> getColony() {
-        return colony;
-    }
 
-    @Override
     public Dimension getFieldSize() {
         return fieldSize;
     }
 
-    @Override
+
     public void setLifeSpan(int lifeSpan) {
         this.lifeSpan = lifeSpan;
     }
 
-    @Override
+
     public int getLifeSpan() {
         return lifeSpan;
     }
 
-    @Override
+
     public void runSimulation() {
         new ControlThread(this).start();
-
     }
 
-    @Override
+
     public void stopSimulation() {
         state = State.STOPPED;
     }
 
-    @Override
+
     public void clearField() {
         colony.clear();
-        sendEvent(new ModelEvent(ModelEvent.ModelEventType.DATA_CHANGED));
+        sendEvent(new SimulatorEvent(SimulatorEvent.SimulatorEventType.DATA_CHANGED));
     }
 
-    @Override
-    public void registerListener(ModelListener listener) {
+
+    public void registerListener(SimulatorListener listener) {
         listeners.add(listener);
     }
 
-    @Override
-    public void removeListener(ModelListener listener) {
+
+    public void removeListener(SimulatorListener listener) {
         listeners.remove(listener);
     }
 
-    @Override
-    public void sendEvent(ModelEvent event) {
-        for (ModelListener listener : listeners) {
+
+    public void sendEvent(SimulatorEvent event) {
+        for (SimulatorListener listener : listeners) {
             listener.handleEvent(event);
         }
 

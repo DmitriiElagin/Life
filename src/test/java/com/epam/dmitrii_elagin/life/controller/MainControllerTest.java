@@ -1,6 +1,5 @@
 package com.epam.dmitrii_elagin.life.controller;
 
-import com.epam.dmitrii_elagin.life.model.IModel;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -10,7 +9,6 @@ import org.mockito.junit.MockitoRule;
 
 import java.awt.*;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.verify;
 
 public class MainControllerTest {

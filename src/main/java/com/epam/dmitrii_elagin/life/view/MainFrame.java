@@ -3,17 +3,20 @@ package com.epam.dmitrii_elagin.life.view;
 
 import com.epam.dmitrii_elagin.life.Main;
 import com.epam.dmitrii_elagin.life.controller.MainController;
-import com.epam.dmitrii_elagin.life.model.IModel;
-import com.epam.dmitrii_elagin.life.model.ModelEvent;
+import com.epam.dmitrii_elagin.life.simulator.Simulator;
+import com.epam.dmitrii_elagin.life.simulator.SimulatorEvent;
+import com.epam.dmitrii_elagin.life.view.matrix.BacteriaMatrix;
 import com.epam.dmitrii_elagin.life.view.matrix.CellClickListener;
-import com.epam.dmitrii_elagin.life.view.matrix.Matrix;
 
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Collection;
 
 
-public class MainFrame extends Frame implements ActionListener, ModelListener, CellClickListener {
+public class MainFrame extends Frame implements ActionListener, SimulatorListener, CellClickListener {
 
     private final MainController controller;
 
@@ -23,7 +26,7 @@ public class MainFrame extends Frame implements ActionListener, ModelListener, C
     //Данные из модели
     private final Collection<Point> data;
 
-    private Matrix matrix;
+    private BacteriaMatrix matrix;
 
     private Button btnStart;
     private Button btnClear;
@@ -68,7 +71,7 @@ public class MainFrame extends Frame implements ActionListener, ModelListener, C
             }
         });
 
-        matrix = new Matrix(fieldSize.width, fieldSize.height, data);
+        matrix = new BacteriaMatrix(fieldSize.width, fieldSize.height, data);
         matrix.addCellClickListener(this);
 
         add(matrix, BorderLayout.CENTER);
@@ -152,7 +155,7 @@ public class MainFrame extends Frame implements ActionListener, ModelListener, C
     }
 
     @Override
-    public void handleEvent(ModelEvent event) {
+    public void handleEvent(SimulatorEvent event) {
 
         switch (event.getEventType()) {
             case STATE_CHANGED:
@@ -170,14 +173,14 @@ public class MainFrame extends Frame implements ActionListener, ModelListener, C
         }
     }
 
-    private void setButtonsState(IModel.State state) {
-        if (state == IModel.State.RUNNING) {
+    private void setButtonsState(Simulator.State state) {
+        if (state == Simulator.State.RUNNING) {
             btnStart.setEnabled(false);
-            btnStart.setLabel("Running...");
+            btnStart.setLabel("Симуляция..");
             btnClear.setEnabled(false);
-        } else if (state == IModel.State.STOPPED) {
+        } else if (state == Simulator.State.STOPPED) {
             btnStart.setEnabled(true);
-            btnStart.setLabel("Start");
+            btnStart.setLabel("Старт");
             btnClear.setEnabled(true);
         }
     }

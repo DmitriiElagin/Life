@@ -1,6 +1,5 @@
 package com.epam.dmitrii_elagin.life.controller;
 
-import com.epam.dmitrii_elagin.life.model.IModel;
 import com.epam.dmitrii_elagin.life.view.SettingsDialog;
 
 import java.awt.*;

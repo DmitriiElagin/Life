@@ -1,14 +1,13 @@
 package com.epam.dmitrii_elagin.life.view;
 
 import com.epam.dmitrii_elagin.life.controller.MainController;
-import com.epam.dmitrii_elagin.life.model.Model;
+import com.epam.dmitrii_elagin.life.simulator.Simulator;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -30,9 +29,9 @@ public class MainFrameTest {
 
     @Before
     public void setUp() {
-        Model model = new Model();
-        spyFrame = spy(new MainFrame(controller, model.getColony()));
-	
+        Simulator simulator = new Simulator();
+        spyFrame = spy(new MainFrame(controller, simulator.getColony()));
+
     }
 
     @Test

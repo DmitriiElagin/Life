@@ -1,4 +1,4 @@
-package com.epam.dmitrii_elagin.life.model;
+package com.epam.dmitrii_elagin.life.simulator;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -9,14 +9,14 @@ import static org.mockito.Mockito.*;
 
 public class ControlThreadTest {
 
-    private Model spyModel;
+    private Simulator spySimulator;
     private ControlThread controlThread;
 
     @Before
     public void setUp() {
-        spyModel = spy(new Model());
-        spyModel.setLifeSpan(5);
-        controlThread = new ControlThread(spyModel);
+        spySimulator = spy(new Simulator());
+        spySimulator.setLifeSpan(5);
+        controlThread = new ControlThread(spySimulator);
 
     }
 
@@ -24,7 +24,7 @@ public class ControlThreadTest {
     public void testRunShouldInvokeRandomlyFill() {
         controlThread.run();
 
-        verify(spyModel).randomlyFill();
+        verify(spySimulator).randomlyFill();
 
     }
 
@@ -32,15 +32,15 @@ public class ControlThreadTest {
     public void testRunShouldSwitchState() {
         controlThread.run();
 
-        verify(spyModel).setState(IModel.State.RUNNING);
-        verify(spyModel).setState(IModel.State.STOPPED);
+        verify(spySimulator).setState(IModel.State.RUNNING);
+        verify(spySimulator).setState(IModel.State.STOPPED);
     }
 
     @Test
     public void testRunShouldSendEvents() {
         controlThread.run();
 
-        verify(spyModel, atLeast(2)).
+        verify(spySimulator, atLeast(2)).
                 sendEvent(anyObject());
     }
 
@@ -48,16 +48,16 @@ public class ControlThreadTest {
     public void testRunShouldInvokeGetLifeSpanFiveTimes() {
         controlThread.run();
 
-        verify(spyModel, times(5)).getLifeSpan();
+        verify(spySimulator, times(5)).getLifeSpan();
     }
 
     @Test
     public void testRunShouldStopSimulationWhenColonyIsEmpty() {
-        spyModel.getColony().add(new Point(0, 0));
+        spySimulator.getColony().add(new Point(0, 0));
 
         controlThread.run();
 
-        verify(spyModel, times(1)).getLifeSpan();
+        verify(spySimulator, times(1)).getLifeSpan();
     }
 
 

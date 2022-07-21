@@ -1,6 +1,5 @@
 package com.epam.dmitrii_elagin.life.controller;
 
-import com.epam.dmitrii_elagin.life.model.IModel;
 import com.epam.dmitrii_elagin.life.view.SettingsDialog;
 import org.junit.Before;
 import org.junit.Rule;
@@ -11,7 +10,6 @@ import org.mockito.junit.MockitoRule;
 
 import java.awt.*;
 
-import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;

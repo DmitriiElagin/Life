@@ -1,4 +1,4 @@
-package com.epam.dmitrii_elagin.life.model;
+package com.epam.dmitrii_elagin.life.simulator;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -6,10 +6,10 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import java.awt.*;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class CreatorTest {
@@ -47,14 +47,14 @@ public class CreatorTest {
 
     @Before
     public void setUp() {
-        Model model = new Model();
+        Simulator simulator = new Simulator();
 
-        model.setTightness(4);
-        model.setLoneliness(2);
+        simulator.setTightness(4);
+        simulator.setLoneliness(2);
 
-        model.getColony().addAll(points);
+        simulator.getColony().addAll(points);
 
-        creator = new Creator(model);
+        creator = new Creator(simulator);
     }
 
     @Test

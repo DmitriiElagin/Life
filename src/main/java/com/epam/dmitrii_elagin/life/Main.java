@@ -2,8 +2,7 @@ package com.epam.dmitrii_elagin.life;
 
 import com.epam.dmitrii_elagin.life.controller.MainController;
 import com.epam.dmitrii_elagin.life.controller.SettingsController;
-import com.epam.dmitrii_elagin.life.model.IModel;
-import com.epam.dmitrii_elagin.life.model.Model;
+import com.epam.dmitrii_elagin.life.simulator.Simulator;
 import com.epam.dmitrii_elagin.life.view.MainFrame;
 import com.epam.dmitrii_elagin.life.view.SettingsDialog;
 
@@ -27,7 +26,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        IModel model = new Model();
+        IModel model = new Simulator();
 
         MainFrame frame = new MainFrame(new MainController(model), model.getColony());
 

@@ -1,4 +1,4 @@
-package com.epam.dmitrii_elagin.life.model;
+package com.epam.dmitrii_elagin.life.simulator;
 
 import java.awt.*;
 import java.util.Collection;
@@ -9,19 +9,19 @@ import java.util.concurrent.Callable;
 //Вычисляет клетки, в которых надо создать  новые бактерии
 public class Creator implements Callable<List<Point>> {
 
-    private final Model model;
+    private final Simulator simulator;
 
-    Creator(Model model) {
-        this.model = model;
+    Creator(Simulator simulator) {
+        this.simulator = simulator;
     }
 
     @Override
     public List<Point> call() {
         List<Point> result = new LinkedList<>();
 
-        Dimension fieldSize = model.getFieldSize();
+        Dimension fieldSize = simulator.getFieldSize();
 
-        Collection<Point> colony = model.getColony();
+        Collection<Point> colony = simulator.getColony();
 
         for (int y = 0; y < fieldSize.height; y++) {
             for (int x = 0; x < fieldSize.width; x++) {
@@ -29,9 +29,9 @@ public class Creator implements Callable<List<Point>> {
 
                 if (!colony.contains(point)) {
                     //Посчитать колл-во соседних занятых клеток
-                    int n = model.countNeighbors(point);
+                    int n = simulator.countNeighbors(point);
 
-                    if (n > model.getLoneliness() && n < model.getTightness()) {
+                    if (n > simulator.getLoneliness() && n < simulator.getTightness()) {
                         result.add(point);
                     }
                 }
