@@ -1,5 +1,6 @@
 package com.epam.dmitrii_elagin.life.controller;
 
+import com.epam.dmitrii_elagin.life.simulator.Simulator;
 import com.epam.dmitrii_elagin.life.view.SettingsDialog;
 import org.junit.Before;
 import org.junit.Rule;
@@ -17,7 +18,7 @@ import static org.mockito.Mockito.verify;
 public class SettingsControllerTest {
 
     @Mock
-    private IModel model;
+    private Simulator simulator;
 
     private SettingsController controller;
 
@@ -30,7 +31,7 @@ public class SettingsControllerTest {
 
     @Before
     public void setUp() throws Exception {
-        controller = new SettingsController(model);
+        controller = new SettingsController(simulator);
     }
 
     @Test
@@ -41,14 +42,14 @@ public class SettingsControllerTest {
 
     @Test
     public void functionalTestOnOkAction() {
-        Dimension dimension = new Dimension(5,2);
+        Dimension dimension = new Dimension(5, 2);
 
-        controller.onOkAction(dimension,10,7,3,dialog);
+        controller.onOkAction(dimension, 10, 7, 3, dialog);
 
-        verify(model).setFieldSize(dimension);
-        verify(model).setLifeSpan(10);
-        verify(model).setTightness(7);
-        verify(model).setLoneliness(3);
+        verify(simulator).setFieldSize(dimension);
+        verify(simulator).setLifeSpan(10);
+        verify(simulator).setTightness(7);
+        verify(simulator).setLoneliness(3);
         verify(dialog).dispose();
     }
 

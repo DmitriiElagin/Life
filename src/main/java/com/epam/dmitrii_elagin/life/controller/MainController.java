@@ -1,50 +1,51 @@
 package com.epam.dmitrii_elagin.life.controller;
 
+import com.epam.dmitrii_elagin.life.simulator.Simulator;
 import com.epam.dmitrii_elagin.life.view.SettingsDialog;
 
 import java.awt.*;
 
 public class MainController {
 
-    private final IModel model;
+    private final Simulator simulator;
 
-    public MainController(IModel model) {
-        this.model = model;
+    public MainController(Simulator simulator) {
+        this.simulator = simulator;
     }
 
 
     public void onClearAction() {
-        model.clearField();
+        simulator.clearField();
     }
 
     public void onSettingsAction(Frame parent) {
 
 
-        model.stopSimulation();
+        simulator.stopSimulation();
 
         SettingsController settingsController =
-                new SettingsController(model);
+                new SettingsController(simulator);
 
-        Dimension fieldSize = model.getFieldSize();
+        Dimension fieldSize = simulator.getFieldSize();
         SettingsDialog dialog =
                 new SettingsDialog(parent, settingsController,
                         new Dimension(fieldSize.width, fieldSize.height),
-                        model.getLifeSpan(), model.getTightness(),
-                        model.getLoneliness());
+                        simulator.getLifeSpan(), simulator.getTightness(),
+                        simulator.getLoneliness());
 
         dialog.setVisible(true);
 
     }
 
     public void onStartAction() {
-        model.runSimulation();
+        simulator.runSimulation();
     }
 
     public void onStopAction() {
-        model.stopSimulation();
+        simulator.stopSimulation();
     }
 
     public void onCellClick(Point p) {
-        model.switchCell(p);
+        simulator.switchCell(p);
     }
 }

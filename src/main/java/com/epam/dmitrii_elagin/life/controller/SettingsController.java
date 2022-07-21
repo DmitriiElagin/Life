@@ -2,6 +2,7 @@ package com.epam.dmitrii_elagin.life.controller;
 
 
 import com.epam.dmitrii_elagin.life.Main;
+import com.epam.dmitrii_elagin.life.simulator.Simulator;
 import com.epam.dmitrii_elagin.life.view.SettingsDialog;
 
 import java.awt.*;
@@ -9,10 +10,10 @@ import java.awt.*;
 
 public class SettingsController {
 
-    private final IModel model;
+    private final Simulator simulator;
 
-    public SettingsController(IModel model) {
-        this.model = model;
+    public SettingsController(Simulator simulator) {
+        this.simulator = simulator;
     }
 
     public void onCancelAction(SettingsDialog dialog) {
@@ -22,14 +23,14 @@ public class SettingsController {
     public void onOkAction(Dimension size, int lifeSpan, int tightness, int loneliness, SettingsDialog dialog) {
         int minSize = Main.getProperty(Main.MIN_SIZE);
 
-        if(size.width<minSize || size.height<minSize) {
+        if (size.width < minSize || size.height < minSize) {
             dialog.showError("Высота или ширина < " + minSize);
         }
         else {
-            model.setFieldSize(size);
-            model.setLifeSpan(lifeSpan);
-            model.setTightness(tightness);
-            model.setLoneliness(loneliness);
+            simulator.setFieldSize(size);
+            simulator.setLifeSpan(lifeSpan);
+            simulator.setTightness(tightness);
+            simulator.setLoneliness(loneliness);
             dialog.dispose();
         }
     }

@@ -1,5 +1,6 @@
 package com.epam.dmitrii_elagin.life.controller;
 
+import com.epam.dmitrii_elagin.life.simulator.Simulator;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -15,7 +16,7 @@ public class MainControllerTest {
 
 
     @Mock
-    private IModel model;
+    private Simulator model;
 
     private MainController controller;
 
