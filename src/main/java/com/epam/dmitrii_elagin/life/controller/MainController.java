@@ -8,9 +8,11 @@ import java.awt.*;
 public class MainController {
 
     private final Simulator simulator;
+    private final SettingsController settingsController;
 
-    public MainController(Simulator simulator) {
+    public MainController(Simulator simulator, SettingsController settingsController) {
         this.simulator = simulator;
+        this.settingsController = settingsController;
     }
 
 
@@ -19,14 +21,10 @@ public class MainController {
     }
 
     public void onSettingsAction(Frame parent) {
-
-
         simulator.stopSimulation();
 
-        SettingsController settingsController =
-                new SettingsController(simulator);
-
         Dimension fieldSize = simulator.getFieldSize();
+
         SettingsDialog dialog =
                 new SettingsDialog(parent, settingsController,
                         new Dimension(fieldSize.width, fieldSize.height),

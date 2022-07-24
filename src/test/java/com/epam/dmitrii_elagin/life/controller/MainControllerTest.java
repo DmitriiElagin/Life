@@ -13,10 +13,8 @@ import java.awt.*;
 import static org.mockito.Mockito.verify;
 
 public class MainControllerTest {
-
-
     @Mock
-    private Simulator model;
+    private Simulator simulator;
 
     private MainController controller;
 
@@ -26,7 +24,7 @@ public class MainControllerTest {
 
     @Before
     public void setUp() throws Exception {
-        controller = new MainController(model);
+        controller = new MainController(simulator, new SettingsController(simulator));
 
     }
 
@@ -34,7 +32,7 @@ public class MainControllerTest {
     public void testOnClearAction() {
         controller.onClearAction();
 
-        verify(model).clearField();
+        verify(simulator).clearField();
     }
 
     @Test
@@ -45,14 +43,14 @@ public class MainControllerTest {
     public void testOnStartAction() {
         controller.onStartAction();
 
-        verify(model).runSimulation();
+        verify(simulator).runSimulation();
     }
 
     @Test
     public void testOnStopAction() {
         controller.onStopAction();
 
-        verify(model).stopSimulation();
+        verify(simulator).stopSimulation();
     }
 
     @Test
@@ -61,6 +59,6 @@ public class MainControllerTest {
 
         controller.onCellClick(point);
 
-        verify(model).switchCell(point);
+        verify(simulator).switchCell(point);
     }
 }

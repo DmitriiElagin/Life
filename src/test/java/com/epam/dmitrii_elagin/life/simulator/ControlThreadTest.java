@@ -14,8 +14,7 @@ public class ControlThreadTest {
 
     @Before
     public void setUp() {
-        spySimulator = spy(new Simulator());
-        spySimulator.setLifeSpan(5);
+        spySimulator = spy(new Simulator(new Dimension(30, 30), 5, 2, 4));
         controlThread = new ControlThread(spySimulator);
 
     }
@@ -32,8 +31,8 @@ public class ControlThreadTest {
     public void testRunShouldSwitchState() {
         controlThread.run();
 
-        verify(spySimulator).setState(IModel.State.RUNNING);
-        verify(spySimulator).setState(IModel.State.STOPPED);
+        verify(spySimulator).setState(Simulator.State.RUNNING);
+        verify(spySimulator).setState(Simulator.State.STOPPED);
     }
 
     @Test

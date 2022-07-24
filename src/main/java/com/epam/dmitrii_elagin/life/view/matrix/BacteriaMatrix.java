@@ -9,7 +9,7 @@ public final class BacteriaMatrix extends Matrix {
     private int rows;
     private int columns;
     private Image icon;
-    private Collection<Point> bacteria;
+    private final Collection<Point> bacteria;
 
     public BacteriaMatrix(int rows, int columns, Collection<Point> bacteria) {
         super();
@@ -20,11 +20,6 @@ public final class BacteriaMatrix extends Matrix {
 
         loadImagesFromResources();
     }
-
-    public BacteriaMatrix() {
-        super();
-    }
-
     @Override
     protected void drawItem(int x, int y, Graphics graphics, Rectangle rect) {
         if (bacteria.contains(new Point(x, y))) {

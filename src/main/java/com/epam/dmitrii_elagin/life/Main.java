@@ -4,7 +4,6 @@ import com.epam.dmitrii_elagin.life.controller.MainController;
 import com.epam.dmitrii_elagin.life.controller.SettingsController;
 import com.epam.dmitrii_elagin.life.simulator.Simulator;
 import com.epam.dmitrii_elagin.life.view.MainFrame;
-import com.epam.dmitrii_elagin.life.view.SettingsDialog;
 
 import java.awt.*;
 import java.util.ResourceBundle;
@@ -25,21 +24,18 @@ public class Main {
 
 
     public static void main(String[] args) {
-
-        IModel model = new Simulator();
-
-        MainFrame frame = new MainFrame(new MainController(model), model.getColony());
-
-        model.registerListener(frame);
-
         int size = getProperty(FIELD_SIZE);
 
-        SettingsDialog settingsFrame =
-                new SettingsDialog(frame, new SettingsController(model),
-                        new Dimension(size, size), getProperty(LIFE_SPAN),
-                        getProperty(Main.TIGHTNESS), getProperty(Main.LONELINESS));
+        Simulator simulator = new Simulator(
+                new Dimension(size, size),
+                getProperty(LIFE_SPAN),
+                getProperty(LONELINESS),
+                getProperty(TIGHTNESS));
 
-        settingsFrame.setVisible(true);
+        MainFrame frame = new MainFrame(new MainController(simulator, new SettingsController(simulator)),
+                simulator.getBacteriaCollection(), new Dimension(size, size));
+
+        simulator.registerListener(frame);
 
         frame.setVisible(true);
 

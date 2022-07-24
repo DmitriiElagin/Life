@@ -49,23 +49,20 @@ public abstract class Matrix extends DoubleBuffer {
         int width = getWidth();
         int height = getHeight();
 
-        int columns = getColumns();
-        int rows = getRows();
-
         if (background != null) {
             g2d.drawImage(background, 0, 0, width, height, this);
         } else {
             g2d.setBackground(Color.darkGray);
         }
 
-        cellWidth = width / columns;
-        cellHeight = height / rows;
+        cellWidth = width / getColumns();
+        cellHeight = height / getRows();
 
-        xOffset = (width - (columns * cellWidth)) / 2;
-        yOffset = (height - (rows * cellHeight)) / 2;
+        xOffset = (width - (getColumns() * cellWidth)) / 2;
+        yOffset = (height - (getRows() * cellHeight)) / 2;
 
-        for (int row = 0; row < rows; row++) {
-            for (int col = 0; col < columns; col++) {
+        for (int row = 0; row < getRows(); row++) {
+            for (int col = 0; col < getColumns(); col++) {
                 Rectangle rect = new Rectangle(xOffset + (col * cellWidth),
                         yOffset + (row * cellHeight),
                         cellWidth, cellHeight);

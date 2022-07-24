@@ -15,7 +15,6 @@ import java.awt.event.ActionEvent;
 import static org.mockito.Mockito.*;
 
 public class MainFrameTest {
-
     @Mock
     private MainController controller;
 
@@ -29,8 +28,8 @@ public class MainFrameTest {
 
     @Before
     public void setUp() {
-        Simulator simulator = new Simulator();
-        spyFrame = spy(new MainFrame(controller, simulator.getColony()));
+        Simulator simulator = new Simulator(new Dimension(30, 30), 100, 2, 4);
+        spyFrame = spy(new MainFrame(controller, simulator.getBacteriaCollection()));
 
     }
 

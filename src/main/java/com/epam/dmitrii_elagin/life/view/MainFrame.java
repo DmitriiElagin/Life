@@ -1,7 +1,5 @@
 package com.epam.dmitrii_elagin.life.view;
 
-
-import com.epam.dmitrii_elagin.life.Main;
 import com.epam.dmitrii_elagin.life.controller.MainController;
 import com.epam.dmitrii_elagin.life.simulator.Simulator;
 import com.epam.dmitrii_elagin.life.simulator.SimulatorEvent;
@@ -19,13 +17,6 @@ import java.util.Collection;
 public class MainFrame extends Frame implements ActionListener, SimulatorListener, CellClickListener {
 
     private final MainController controller;
-
-    //Размер игрового поля
-    private Dimension fieldSize;
-
-    //Данные из модели
-    private final Collection<Point> data;
-
     private BacteriaMatrix matrix;
 
     private Button btnStart;
@@ -34,27 +25,22 @@ public class MainFrame extends Frame implements ActionListener, SimulatorListene
     private final int resolution;
 
 
-    public MainFrame(MainController controller, Collection<Point> data) {
+    public MainFrame(MainController controller, Collection<Point> data, Dimension fieldSize) {
         this.controller = controller;
-        this.data = data;
 
-        resolution =Toolkit.getDefaultToolkit().getScreenResolution();
+        resolution = Toolkit.getDefaultToolkit().getScreenResolution();
 
-        initUI();
+        initUI(data, fieldSize);
     }
 
 
     //Создание и инициализация компонентов интерфейса
-    private void initUI() {
+    private void initUI(Collection<Point> data, Dimension fieldSize) {
         setTitle("Life");
 
-        setSize(resolution*10, resolution*10);
+        setSize(resolution * 10, resolution * 10);
 
-        setMinimumSize(new Dimension(resolution *5, resolution *5));
-
-        //Установить размер поля по-умолчанию
-        int size = Main.getProperty(Main.FIELD_SIZE);
-        fieldSize = new Dimension(size, size);
+        setMinimumSize(new Dimension(resolution * 5, resolution * 5));
 
         setResizable(true);
 
@@ -162,9 +148,8 @@ public class MainFrame extends Frame implements ActionListener, SimulatorListene
                 setButtonsState(event.getState());
                 break;
             case FIELD_SIZE_CHANGED:
-                fieldSize = event.getSize();
-                matrix.setColumns(fieldSize.width);
-                matrix.setRows(fieldSize.height);
+                matrix.setColumns(event.getSize().width);
+                matrix.setRows(event.getSize().height);
                 matrix.repaint();
                 break;
             case DATA_CHANGED:
@@ -176,11 +161,11 @@ public class MainFrame extends Frame implements ActionListener, SimulatorListene
     private void setButtonsState(Simulator.State state) {
         if (state == Simulator.State.RUNNING) {
             btnStart.setEnabled(false);
-            btnStart.setLabel("Симуляция..");
+            btnStart.setLabel("Simulation...");
             btnClear.setEnabled(false);
         } else if (state == Simulator.State.STOPPED) {
             btnStart.setEnabled(true);
-            btnStart.setLabel("Старт");
+            btnStart.setLabel("Start");
             btnClear.setEnabled(true);
         }
     }

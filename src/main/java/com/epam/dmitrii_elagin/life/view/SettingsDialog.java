@@ -59,7 +59,7 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
     //Инициализация и настройка компонентов интерфейса
     private void initUI() {
         GridBagLayout layout = new GridBagLayout();
-        setTitle("Настройки");
+        setTitle("Settings");
 
         //Установить окно по центру экрана
         setLocationRelativeTo(null);
@@ -108,9 +108,9 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
         constraints.ipady = 20;
         constraints.ipadx = 100;
 
-        lblError = new Label("Ошибка");
-        //lblError.setPreferredSize(new Dimension(getWidth()-20, resolution/6));
+        lblError = new Label();
         lblError.setForeground(Color.red);
+
         add(lblError, constraints);
     }
 
@@ -164,19 +164,19 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
 
         constraints.gridx = 0;
         constraints.gridy = 0;
-        addComponent(new Label("Ширина:"), constraints, font);
+        addComponent(new Label("Width:"), constraints, font);
 
         constraints.gridy = 1;
-        addComponent(new Label("Высота:"), constraints, font);
+        addComponent(new Label("Height:"), constraints, font);
 
         constraints.gridy = 2;
-        addComponent(new Label("Срок жизни:"), constraints, font);
+        addComponent(new Label("Life span:"), constraints, font);
 
         constraints.gridy = 3;
-        addComponent(new Label("Теснота:"), constraints, font);
+        addComponent(new Label("Tightness:"), constraints, font);
 
         constraints.gridy = 4;
-        addComponent(new Label("Одиночество:"), constraints, font);
+        addComponent(new Label("Loneliness:"), constraints, font);
     }
 
 

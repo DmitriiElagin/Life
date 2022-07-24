@@ -1,6 +1,5 @@
 package com.epam.dmitrii_elagin.life.simulator;
 
-import com.epam.dmitrii_elagin.life.Main;
 import com.epam.dmitrii_elagin.life.view.SimulatorListener;
 
 import java.awt.*;
@@ -34,21 +33,17 @@ public class Simulator {
 
     private final Queue<SimulatorListener> listeners;
 
-    public Simulator() {
+    public Simulator(Dimension fieldSize, int lifeSpan, int loneliness, int tightness) {
+        this.loneliness = loneliness;
+        this.tightness = tightness;
+        this.fieldSize = fieldSize;
+        this.lifeSpan = lifeSpan;
+
         listeners = new LinkedList<>();
 
         colony = ConcurrentHashMap.newKeySet();
 
         state = State.STOPPED;
-
-        //Установить размер поля по-умолчанию
-        int size = Main.getProperty(Main.FIELD_SIZE);
-        fieldSize = new Dimension(size, size);
-
-        //Установить параметры симуляции по-умолчанию
-        setLifeSpan(Main.getProperty(Main.LIFE_SPAN));
-        setTightness(Main.getProperty(Main.TIGHTNESS));
-        setLoneliness(Main.getProperty(Main.LONELINESS));
     }
 
     Set<Point> getColony() {

@@ -27,7 +27,7 @@ public class SimulatorFunctionalTest {
 
     @Before
     public void setUp() {
-        simulator = new Simulator();
+        simulator = new Simulator(new Dimension(30, 30), 100, 2, 4);
         simulator.registerListener(modelListener);
     }
 

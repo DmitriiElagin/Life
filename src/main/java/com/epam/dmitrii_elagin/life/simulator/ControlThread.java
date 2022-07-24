@@ -21,7 +21,7 @@ class ControlThread extends Thread {
         int age = 0;
 
         //Переключить состояние приложения
-        simulator.setState(IModel.State.RUNNING);
+        simulator.setState(Simulator.State.RUNNING);
 
         //Если колония пуста, заполнить поле рандомно
         if (simulator.getColony().isEmpty()) {
@@ -45,7 +45,7 @@ class ControlThread extends Thread {
 
                 simulator.getColony().addAll(newBacteria);
 
-                simulator.getColony().removeAll(deadBacteria);
+                deadBacteria.forEach(simulator.getColony()::remove);
 
                 //Уведомить вью об изменении данных
                 simulator.sendEvent(new SimulatorEvent(SimulatorEvent.SimulatorEventType.DATA_CHANGED));
@@ -58,7 +58,7 @@ class ControlThread extends Thread {
 
                 //условие выполнения цикла
                 isRunning = (age < simulator.getLifeSpan()) &&
-                        (simulator.getState() == IModel.State.RUNNING) &&
+                        (simulator.getState() == Simulator.State.RUNNING) &&
                         (!simulator.getColony().isEmpty());
 
             } catch (InterruptedException | ExecutionException e) {
@@ -66,7 +66,7 @@ class ControlThread extends Thread {
             }
          }
         //Переключить состояние приложения
-        simulator.setState(IModel.State.STOPPED);
+        simulator.setState(Simulator.State.STOPPED);
 
         service.shutdown();
     }

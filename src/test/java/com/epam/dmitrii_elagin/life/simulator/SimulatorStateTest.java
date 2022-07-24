@@ -15,7 +15,7 @@ public class SimulatorStateTest {
 
     @Before
     public void init() {
-        simulator = new Simulator();
+        simulator = new Simulator(new Dimension(30, 30), 100, 2, 4);
 
         for (int y = 1; y < 4; y++) {
             for (int x = 1; x < 4; x++) {
@@ -24,14 +24,6 @@ public class SimulatorStateTest {
         }
 
     }
-
-    @Test
-    public void testColonyShouldBeNotNull() {
-        Simulator simulator = new Simulator();
-
-        assertNotNull(simulator.getColony());
-    }
-
     @Test
     public void testWidthAndHeightMustBeGreaterThanOne() {
 
@@ -45,7 +37,7 @@ public class SimulatorStateTest {
 
     @Test
     public void testInitialStateShouldBeStopped() {
-        assertSame(simulator.getState(), IModel.State.STOPPED);
+        assertSame(simulator.getState(), Simulator.State.STOPPED);
 
     }
 
@@ -92,11 +84,11 @@ public class SimulatorStateTest {
 
     @Test
     public void testStopSimulation() {
-        simulator.setState(IModel.State.RUNNING);
+        simulator.setState(Simulator.State.RUNNING);
 
         simulator.stopSimulation();
 
-        assertEquals(IModel.State.STOPPED, simulator.getState());
+        assertEquals(Simulator.State.STOPPED, simulator.getState());
 
 
     }
