@@ -8,6 +8,8 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Simulator {
+    private static final int RANDOM_SQUARE_AREA = 4;
+    private static final int DENSITY = 5;
 
     public enum State {
         RUNNING, STOPPED
@@ -41,6 +43,7 @@ public class Simulator {
 
         listeners = new LinkedList<>();
 
+        //Создать Set на основе ConcurrentHashMap
         colony = ConcurrentHashMap.newKeySet();
 
         state = State.STOPPED;
@@ -84,14 +87,20 @@ public class Simulator {
 
     //Заполнить поле произвольно
     public void randomlyFill() {
-        Random random = new Random(System.currentTimeMillis());
-        for (int y = 0; y < fieldSize.height; y++) {
-            for (int x = 0; x < fieldSize.width; x++) {
-                if (random.nextBoolean()) {
-                    colony.add(new Point(x, y));
-                }
+        int count = 0;
+        int x0 = (int) (Math.random() * (fieldSize.width - RANDOM_SQUARE_AREA));
+        int y0 = (int) (Math.random() * (fieldSize.height - RANDOM_SQUARE_AREA));
+
+        // Добавлять бактерии с рандомным расположением, пока не будет достигнута нужная плотность области
+        while (count < DENSITY) {
+            int x = (int) (Math.random() * RANDOM_SQUARE_AREA) + x0;
+            int y = (int) (Math.random() * RANDOM_SQUARE_AREA) + y0;
+
+            if (colony.add(new Point(x, y))) {
+                count++;
             }
         }
+        sendEvent(new SimulatorEvent(SimulatorEvent.SimulatorEventType.DATA_CHANGED));
     }
 
     //Считать колл-во занятых соседних клеток

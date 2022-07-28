@@ -28,8 +28,8 @@ public class MainFrameTest {
 
     @Before
     public void setUp() {
-        Simulator simulator = new Simulator(new Dimension(30, 30), 100, 2, 4);
-        spyFrame = spy(new MainFrame(controller, simulator.getBacteriaCollection()));
+        final Simulator simulator = new Simulator(new Dimension(30, 30), 100, 2, 4);
+        spyFrame = spy(new MainFrame(controller, simulator.getBacteriaCollection(), new Dimension(30, 30)));
 
     }
 
@@ -86,7 +86,7 @@ public class MainFrameTest {
 
     @Test
     public void cellClicked() {
-        int w = 7, h = 13;
+        final int w = 7, h = 13;
 
         spyFrame.cellClicked(w,h);
 

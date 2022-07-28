@@ -68,15 +68,16 @@ public class MainFrame extends Frame implements ActionListener, SimulatorListene
     }
 
     private void createMenu() {
-        Font font = new Font(Font.SANS_SERIF, Font.PLAIN, resolution /7);
+        final Font font = new Font(Font.SANS_SERIF, Font.PLAIN, resolution / 7);
 
-        MenuBar menuBar = new MenuBar();
-        Menu menu = new Menu("Menu");
+        final MenuBar menuBar = new MenuBar();
+        final Menu menu = new Menu("Menu");
         menu.setFont(font);
 
-        MenuItem miSettings = new MenuItem("Settings");
+        final MenuItem miSettings = new MenuItem("Settings");
         miSettings.addActionListener(this);
-        MenuItem miExit = new MenuItem("Exit");
+
+        final MenuItem miExit = new MenuItem("Exit");
         miExit.addActionListener(this);
 
         menu.add(miSettings);
@@ -88,16 +89,16 @@ public class MainFrame extends Frame implements ActionListener, SimulatorListene
     //Создать панель с кнопками управления
     private void createControlPanel() {
         //Создать панель для кнопок управления
-        Panel pnlControl = new Panel();
+        final Panel pnlControl = new Panel();
         pnlControl.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 10));
 
         //Создать шрифт для кнопок управления
-        Font font = new Font(Font.SANS_SERIF, Font.PLAIN, resolution /5);
+        final Font font = new Font(Font.SANS_SERIF, Font.PLAIN, resolution / 5);
 
         pnlControl.setFont(font);
 
         //Создать размерность конопок управления
-        Dimension dimension = new Dimension(resolution, resolution/4);
+        final Dimension dimension = new Dimension(resolution, resolution / 4);
 
         btnStart = new Button("Start");
         btnStart.setPreferredSize(dimension);
@@ -105,7 +106,7 @@ public class MainFrame extends Frame implements ActionListener, SimulatorListene
         btnStart.addActionListener(this);
         pnlControl.add(btnStart);
 
-        Button btnStop = new Button("Stop");
+        final Button btnStop = new Button("Stop");
         btnStop.setPreferredSize(dimension);
         btnStop.addActionListener(this);
         pnlControl.add(btnStop);

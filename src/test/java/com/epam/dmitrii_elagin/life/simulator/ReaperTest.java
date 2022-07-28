@@ -13,7 +13,6 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class ReaperTest {
-
     @Parameterized.Parameter()
     public java.util.List<Point> points;
 
@@ -24,7 +23,7 @@ public class ReaperTest {
 
     @Before
     public void setUp() {
-        Simulator simulator = new Simulator(new Dimension(30, 30), 100, 2, 4);
+        final Simulator simulator = new Simulator(new Dimension(30, 30), 100, 2, 4);
 
         simulator.getColony().addAll(points);
 

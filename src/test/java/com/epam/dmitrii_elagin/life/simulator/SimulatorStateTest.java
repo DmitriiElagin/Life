@@ -10,7 +10,6 @@ import java.util.Collection;
 import static org.junit.Assert.*;
 
 public class SimulatorStateTest {
-
     private Simulator simulator;
 
     @Before
@@ -26,9 +25,7 @@ public class SimulatorStateTest {
     }
     @Test
     public void testWidthAndHeightMustBeGreaterThanOne() {
-
-
-        Dimension size = simulator.getFieldSize();
+        final Dimension size = simulator.getFieldSize();
 
         assertTrue(size.width > 1);
 
@@ -51,9 +48,9 @@ public class SimulatorStateTest {
 
     @Test
     public void testSwitchCell() {
-        Collection<Point> colony = simulator.getColony();
+        final Collection<Point> colony = simulator.getColony();
 
-        Point point = new Point(10, 10);
+        final Point point = new Point(10, 10);
 
         simulator.switchCell(point);
 

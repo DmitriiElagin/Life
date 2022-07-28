@@ -8,7 +8,6 @@ import java.util.concurrent.Callable;
 
 //Вычисляет клетки с мертвыми бактериями
 public class Reaper implements Callable<List<Point>> {
-
     private final Simulator simulator;
 
     Reaper(Simulator simulator) {
@@ -17,13 +16,12 @@ public class Reaper implements Callable<List<Point>> {
 
     @Override
     public List<Point> call() {
+        final Collection<Point> colony = simulator.getColony();
 
-        Collection<Point> colony = simulator.getColony();
-
-        List<Point> result = new LinkedList<>();
+        final List<Point> result = new LinkedList<>();
 
         for (Point point : colony) {
-            int n = simulator.countNeighbors(point);
+            final int n = simulator.countNeighbors(point);
 
             if (n < simulator.getLoneliness() || n > simulator.getTightness()) {
                 result.add(point);

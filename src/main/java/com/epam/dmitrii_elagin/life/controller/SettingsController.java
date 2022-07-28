@@ -9,7 +9,6 @@ import java.awt.*;
 
 
 public class SettingsController {
-
     private final Simulator simulator;
 
     public SettingsController(Simulator simulator) {
@@ -21,10 +20,10 @@ public class SettingsController {
     }
 
     public void onOkAction(Dimension size, int lifeSpan, int tightness, int loneliness, SettingsDialog dialog) {
-        int minSize = Main.getProperty(Main.MIN_SIZE);
+        final int minSize = Main.getProperty(Main.MIN_SIZE);
 
         if (size.width < minSize || size.height < minSize) {
-            dialog.showError("Высота или ширина < " + minSize);
+            dialog.showError("Width or height < " + minSize);
         }
         else {
             simulator.setFieldSize(size);

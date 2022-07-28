@@ -10,11 +10,6 @@ import java.util.ResourceBundle;
 
 
 public class Main {
-
-    public static final String SETTINGS_WIDTH = "settings_frame.width";
-    public static final String SETTINGS_HEIGHT = "settings_frame.height";
-    public static final String MAIN_WIDTH = "main_frame.width";
-    public static final String MAIN_HEIGHT = "main_frame.height";
     public static final String MIN_SIZE = "field.min_size";
     public static final String MAX_SIZE = "field.max_size";
     public static final String FIELD_SIZE = "field.size";
@@ -24,15 +19,15 @@ public class Main {
 
 
     public static void main(String[] args) {
-        int size = getProperty(FIELD_SIZE);
+        final int size = getProperty(FIELD_SIZE);
 
-        Simulator simulator = new Simulator(
+        final Simulator simulator = new Simulator(
                 new Dimension(size, size),
                 getProperty(LIFE_SPAN),
                 getProperty(LONELINESS),
                 getProperty(TIGHTNESS));
 
-        MainFrame frame = new MainFrame(new MainController(simulator, new SettingsController(simulator)),
+        final MainFrame frame = new MainFrame(new MainController(simulator, new SettingsController(simulator)),
                 simulator.getBacteriaCollection(), new Dimension(size, size));
 
         simulator.registerListener(frame);
@@ -40,7 +35,6 @@ public class Main {
         frame.setVisible(true);
 
     }
-
 
     public static int getProperty(String key) {
         String s = ResourceBundle.getBundle("settings").getString(key);

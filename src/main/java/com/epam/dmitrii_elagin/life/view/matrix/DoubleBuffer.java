@@ -14,7 +14,7 @@ abstract class DoubleBuffer extends Canvas {
 
     public DoubleBuffer() {
 
-        bufferSize=new Dimension();
+        bufferSize = new Dimension();
     }
 
     @Override

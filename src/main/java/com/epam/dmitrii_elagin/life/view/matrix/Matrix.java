@@ -7,7 +7,6 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public abstract class Matrix extends DoubleBuffer {
-
     private int cellWidth;
     private int cellHeight;
     private int xOffset;
@@ -29,7 +28,6 @@ public abstract class Matrix extends DoubleBuffer {
     }
 
     private void notifyCellClickListeners(int column, int row) {
-
         for (CellClickListener listener : cellClickListeners) {
             listener.cellClicked(column, row);
         }
@@ -46,8 +44,8 @@ public abstract class Matrix extends DoubleBuffer {
     public final void paintBuffer(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
 
-        int width = getWidth();
-        int height = getHeight();
+        final int width = getWidth();
+        final int height = getHeight();
 
         if (background != null) {
             g2d.drawImage(background, 0, 0, width, height, this);
@@ -91,8 +89,8 @@ public abstract class Matrix extends DoubleBuffer {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            int column = (e.getX() - xOffset) / cellWidth;
-            int row = (e.getY() - yOffset) / cellHeight;
+            final int column = (e.getX() - xOffset) / cellWidth;
+            final int row = (e.getY() - yOffset) / cellHeight;
 
             notifyCellClickListeners(column, row);
 

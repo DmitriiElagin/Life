@@ -55,7 +55,7 @@ public class MainControllerTest {
 
     @Test
     public void testOnCellClick() {
-        Point point = new Point(0,0);
+       final Point point = new Point(0, 0);
 
         controller.onCellClick(point);
 

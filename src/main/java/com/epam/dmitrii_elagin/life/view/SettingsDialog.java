@@ -58,7 +58,8 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
 
     //Инициализация и настройка компонентов интерфейса
     private void initUI() {
-        GridBagLayout layout = new GridBagLayout();
+        final GridBagLayout layout = new GridBagLayout();
+
         setTitle("Settings");
 
         //Установить окно по центру экрана
@@ -106,7 +107,7 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
         constraints.gridy = 5;
         constraints.gridwidth = 2;
         constraints.ipady = 20;
-        constraints.ipadx = 100;
+        constraints.ipadx = 150;
 
         lblError = new Label();
         lblError.setForeground(Color.red);
@@ -159,8 +160,8 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
     }
 
     private void createLabels() {
-        GridBagConstraints constraints = new GridBagConstraints();
-        Font font = new Font(Font.DIALOG, Font.BOLD, 16);
+        final GridBagConstraints constraints = new GridBagConstraints();
+        final Font font = new Font(Font.DIALOG, Font.BOLD, 16);
 
         constraints.gridx = 0;
         constraints.gridy = 0;
@@ -211,7 +212,7 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
 
     @Override
     public void keyTyped(KeyEvent e) {
-        char c = e.getKeyChar();
+        final char c = e.getKeyChar();
 
         //Вводить только цифры
         if (c != KeyEvent.VK_BACK_SPACE && !Character.isDigit(c)) {
@@ -221,11 +222,9 @@ public class SettingsDialog extends Dialog implements ActionListener, TextListen
 
     @Override
     public void keyPressed(KeyEvent e) {
-
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-
     }
 }

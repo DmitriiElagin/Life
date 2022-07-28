@@ -6,7 +6,7 @@ import java.util.concurrent.*;
 
 //Поток, управляющий процессом моделирования
 class ControlThread extends Thread {
-
+    private static final int PRE_SIMULATION_DELAY = 2000;
     private final Simulator simulator;
 
     ControlThread(Simulator simulator) {
@@ -27,21 +27,26 @@ class ControlThread extends Thread {
         if (simulator.getColony().isEmpty()) {
             simulator.randomlyFill();
 
-            simulator.sendEvent(new SimulatorEvent(SimulatorEvent.SimulatorEventType.DATA_CHANGED));
+            //Пауза переда началом симуляции
+            try {
+                TimeUnit.MILLISECONDS.sleep(PRE_SIMULATION_DELAY);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
 
-        ExecutorService service = Executors.newCachedThreadPool();
+        final ExecutorService service = Executors.newCachedThreadPool();
 
         while (isRunning) {
 
             try {
                 //Запустить выполнение потоков "Создания и Смерти" бактерий
-                Future<List<Point>> creatorFuture = service.submit(new Creator(simulator));
-                Future<List<Point>> reaperFuture = service.submit(new Reaper(simulator));
+                final Future<List<Point>> creatorFuture = service.submit(new Creator(simulator));
+                final Future<List<Point>> reaperFuture = service.submit(new Reaper(simulator));
 
                 //Ждать результатов работы потоков
-                List<Point> newBacteria = creatorFuture.get();
-                List<Point> deadBacteria = reaperFuture.get();
+                final List<Point> newBacteria = creatorFuture.get();
+                final List<Point> deadBacteria = reaperFuture.get();
 
                 simulator.getColony().addAll(newBacteria);
 
@@ -60,7 +65,6 @@ class ControlThread extends Thread {
                 isRunning = (age < simulator.getLifeSpan()) &&
                         (simulator.getState() == Simulator.State.RUNNING) &&
                         (!simulator.getColony().isEmpty());
-
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }

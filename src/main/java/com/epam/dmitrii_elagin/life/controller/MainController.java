@@ -23,9 +23,9 @@ public class MainController {
     public void onSettingsAction(Frame parent) {
         simulator.stopSimulation();
 
-        Dimension fieldSize = simulator.getFieldSize();
+        final Dimension fieldSize = simulator.getFieldSize();
 
-        SettingsDialog dialog =
+        final SettingsDialog dialog =
                 new SettingsDialog(parent, settingsController,
                         new Dimension(fieldSize.width, fieldSize.height),
                         simulator.getLifeSpan(), simulator.getTightness(),

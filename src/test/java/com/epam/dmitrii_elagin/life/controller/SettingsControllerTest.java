@@ -42,7 +42,7 @@ public class SettingsControllerTest {
 
     @Test
     public void functionalTestOnOkAction() {
-        Dimension dimension = new Dimension(5, 2);
+        final Dimension dimension = new Dimension(5, 2);
 
         controller.onOkAction(dimension, 10, 7, 3, dialog);
 
@@ -55,7 +55,7 @@ public class SettingsControllerTest {
 
     @Test
     public void testOnOkActionShouldInvokeShowError(){
-        Dimension dimension = new Dimension(5,1);
+        final Dimension dimension = new Dimension(5, 1);
 
         controller.onOkAction(dimension,10,7,3,dialog);
 

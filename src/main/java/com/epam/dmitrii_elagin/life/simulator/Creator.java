@@ -8,7 +8,6 @@ import java.util.concurrent.Callable;
 
 //Вычисляет клетки, в которых надо создать  новые бактерии
 public class Creator implements Callable<List<Point>> {
-
     private final Simulator simulator;
 
     Creator(Simulator simulator) {
@@ -17,19 +16,19 @@ public class Creator implements Callable<List<Point>> {
 
     @Override
     public List<Point> call() {
-        List<Point> result = new LinkedList<>();
+       final List<Point> result = new LinkedList<>();
 
-        Dimension fieldSize = simulator.getFieldSize();
+        final Dimension fieldSize = simulator.getFieldSize();
 
-        Collection<Point> colony = simulator.getColony();
+        final Collection<Point> colony = simulator.getColony();
 
         for (int y = 0; y < fieldSize.height; y++) {
             for (int x = 0; x < fieldSize.width; x++) {
-                Point point = new Point(x, y);
+                final Point point = new Point(x, y);
 
                 if (!colony.contains(point)) {
                     //Посчитать колл-во соседних занятых клеток
-                    int n = simulator.countNeighbors(point);
+                    final int n = simulator.countNeighbors(point);
 
                     if (n > simulator.getLoneliness() && n < simulator.getTightness()) {
                         result.add(point);
